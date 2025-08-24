@@ -57,7 +57,7 @@ build_1() {
 dep_1() {
     hea1 "Anchor Check Balance and Deploy"
     co1="anchor deploy"
-    co2="solana balance --keypair wallets/wallet2.json --devnet"
+    co2="solana balance --keypair wallets/wallet2.json"
     echo -e "${BLUE}Checking Wallet Ballence for $ACC"
     eval "$co2"
     echo -e "${GREEN}$co1$NC"
@@ -72,3 +72,6 @@ dep_1() {
 # clean and build program
 clean_1
 build_1
+
+# Deploy script 
+dep_1
