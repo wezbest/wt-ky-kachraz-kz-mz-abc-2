@@ -65,22 +65,13 @@ dep_1() {
 }
 
 # getting the new id
+WALLET_DIR="wallets/wallet2.json"
 get_id() {
     hea1 "Solana Get ID"
-    co1=""
+    co1="solana-keygen pubkey $WALLET_DIR"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
 }
-}
 
 # ---Execution zone--- 
-
-# Running the tests 
-# run_test
-
-# clean and build program
-clean_1
-build_1
-
-# Deploy script 
-dep_1
+get_id
