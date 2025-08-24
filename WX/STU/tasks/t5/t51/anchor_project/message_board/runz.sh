@@ -135,7 +135,8 @@ sol_transfer() {
 }
 
 # ---Execution zone--- 
-bal_check
+# bal_check
 # sol_transfer
-# clean_1
+clean_1
+# get_id
 # build_1

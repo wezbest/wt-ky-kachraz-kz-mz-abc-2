@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-message_board = "WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ"
+message_board = "G1SB9D7r71TJGe36LBJzs9WWJ8CDqiEHwtFVoQrKcdcd"
 
 [registry]
 url = "https://api.apr.dev"
