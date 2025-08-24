@@ -56,7 +56,7 @@ build_1() {
 # Checking balance
 bal_check() {
     hea1 "Solana Balance Check"
-    co1="solana balance --keypair wallets/wallet1.json"
+    co1="solana balance -k wallets/wallet2.json --url https://api.devnet.solana.com"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
 }
