@@ -81,6 +81,48 @@ get_id() {
     eval "$co1"
 }
 
+
+# --- Transferring sol --- 
+
+SOL_FROM_KEYPAIR="wallets/wallet1.json"
+SOL_TO_ADDRESS="42Wr5wYojEHWwDFHRfLjyHxLSBQETJZ58XKihcm2Lfcn"
+SOL_AMOUNT_SOL="0.5"
+SOL_CLUSTER="--devnet" 
+
+sol_transfer() {
+  local from_keypair="$SOL_FROM_KEYPAIR"
+  local to_address="$SOL_TO_ADDRESS"
+  local amount_sol="$SOL_AMOUNT_SOL"
+  local cluster="${SOL_CLUSTER:---devnet}"
+  local url="https://api.devnet.solana.com"
+
+  # Validate inputs
+  if [ -z "$from_keypair" ] || [ -z "$to_address" ] || [ -z "$amount_sol" ]; then
+    echo "Error: Missing required variables. Please set:"
+    echo "  SOL_FROM_KEYPAIR = path to sender's keypair file"
+    echo "  SOL_TO_ADDRESS   = recipient's wallet address"
+    echo "  SOL_AMOUNT_SOL   = amount of SOL to send"
+    echo "  SOL_CLUSTER      = network (optional, default: --devnet)"
+    return 1
+  fi
+
+  # Check if keypair file exists
+  if [ ! -f "$from_keypair" ]; then
+    echo "Error: Keypair file not found: $from_keypair"
+    return 1
+  fi
+
+  # Execute transfer
+  solana transfer \
+    --keypair "$from_keypair" \
+    "$to_address" \
+    "$amount_sol" \
+    "$cluster" \
+    --url "$url" \
+    --fee-payer "$from_keypair" \
+    --no-wait
+}
+
 # ---Execution zone--- 
 bal_check
 # clean_1
