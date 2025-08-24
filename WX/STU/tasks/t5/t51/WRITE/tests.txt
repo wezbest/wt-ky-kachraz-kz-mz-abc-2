@@ -1,0 +1,4 @@
+--- run tests --- 
+✔ Initializes the counter (1041ms)
+✔ Posts a message for 69 lamports (1574ms)
+----
