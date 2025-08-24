@@ -1,12 +1,12 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { MsgBrd } from "../target/types/msg_brd";
+import { MessageBoard } from "../target/types/message_board";
 
-describe("msg_brd", () => {
+describe("message_board", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.msgBrd as Program<MsgBrd>;
+  const program = anchor.workspace.messageBoard as Program<MessageBoard>;
 
   it("Is initialized!", async () => {
     // Add your test here.
