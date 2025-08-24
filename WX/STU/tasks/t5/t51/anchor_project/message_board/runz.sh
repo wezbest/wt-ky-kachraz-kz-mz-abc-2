@@ -80,60 +80,25 @@ get_id() {
 
 
 # --- Transferring sol --- 
-
-SOL_FROM_KEYPAIR="wallets/wallet1.json"
-SOL_TO_ADDRESS="WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ"
-SOL_AMOUNT_SOL="1.5"
-SOL_CLUSTER="--devnet"
-SOL_RPC_URL="https://api.devnet.solana.com"
-
 sol_transfer() {
-  # Read variables (expected to be set externally)
-  local FROM_KEYPAIR="${SOL_FROM_KEYPAIR}"
-  local TO_ADDRESS="${SOL_TO_ADDRESS}"
-  local AMOUNT_SOL="${SOL_AMOUNT_SOL}"
-  local CLUSTER="${SOL_CLUSTER:-https://api.devnet.solana.com}"
-  local RPC_URL="${SOL_RPC_URL:-https://api.devnet.solana.com}"
-
-  # Validate required inputs
-  if [[ -z "$FROM_KEYPAIR" || -z "$TO_ADDRESS" || -z "$AMOUNT_SOL" ]]; then
-    echo "Error: Missing required environment variables." >&2
-    echo "Please set:" >&2
-    echo "  SOL_FROM_KEYPAIR = path to sender's keypair file" >&2
-    echo "  SOL_TO_ADDRESS   = recipient's wallet address (base58)" >&2
-    echo "  SOL_AMOUNT_SOL   = amount of SOL to send (e.g. 0.1)" >&2
-    echo "Optional:" >&2
-    echo "  SOL_CLUSTER      = cluster (e.g. --devnet, --testnet)" >&2
-    echo "  SOL_RPC_URL      = custom RPC URL (default: $RPC_URL)" >&2
-    return 1
-  fi
-
-  # Validate keypair file exists
-  if [[ ! -f "$FROM_KEYPAIR" ]]; then
-    echo "Error: Keypair file not found: $FROM_KEYPAIR" >&2
-    return 1
-  fi
-
-  # Validate amount is a number
-  if ! [[ "$AMOUNT_SOL" =~ ^[0-9]+\.?[0-9]*$ ]]; then
-    echo "Error: Invalid amount: $AMOUNT_SOL (must be a number)" >&2
-    return 1
-  fi
-
-  # Execute transfer
+  local FROM_WALLET="wallets/wallet2.json"
+  local TO_WALLET="wallets/wallet4.json"
+  
   solana transfer \
-    --keypair "$FROM_KEYPAIR" \
-    --url "$RPC_URL" \
-    --fee-payer "$FROM_KEYPAIR" \
-    "$TO_ADDRESS" \
-    "$AMOUNT_SOL" \
+    --keypair "$FROM_WALLET" \
+    --url https://api.devnet.solana.com \
+    --fee-payer "$FROM_WALLET" \
+    $(solana-keygen pubkey "$TO_WALLET") \
+    "$1" \
     --no-wait \
     --allow-unfunded-recipient
 }
 
+
+
 # ---Execution zone--- 
 bal_check
-# sol_transfer
+sol_transfer 2
 # clean_1
 # get_id
 # build_1
