@@ -82,7 +82,7 @@ get_id() {
 # --- Transferring sol --- 
 sol_transfer() {
   local FROM_WALLET="wallets/wallet2.json"
-  local TO_WALLET="wallets/wallet4.json"
+  local TO_WALLET="wallets/wallet5.json"
   
   solana transfer \
     --keypair "$FROM_WALLET" \
