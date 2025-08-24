@@ -30,7 +30,29 @@ run_test() {
     eval "$co1"
 }
 
-# Execution zone 
+# Running anchor clean for a proper build
+clean_1() {
+    hea1 "Anchor test"
+    co1="anchor clean"
+    echo -e "${GREEN}$co1$NC"
+    eval "$co1"
+}
+
+
+#  Building the program 
+build_1() {
+    hea1 "Anchor test"
+    co1="anchor build"
+    echo -e "${GREEN}$co1$NC"
+    eval "$co1"
+}
+
+
+# ---Execution zone--- 
 
 # Running the tests 
-run_test
+# run_test
+
+# clean and build program
+clean_1
+build_1
