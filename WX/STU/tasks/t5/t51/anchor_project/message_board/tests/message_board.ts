@@ -61,7 +61,6 @@ describe("message_board", () => {
     )
 
     try {
-      // ✅ Ensure fresh blockhash
       await provider.connection.getLatestBlockhash()
 
       await program.methods
@@ -86,5 +85,59 @@ describe("message_board", () => {
     const messageAccount = await program.account.message.fetch(messagePda)
     expect(messageAccount.content).to.eq(content)
     expect(messageAccount.poster.toString()).to.eq(payer.publicKey.toString())
+  })
+
+  // ❌ UNHAPPY PATH 1: Message too long
+  it("Fails to post message longer than 100 characters", async () => {
+    const content = "x".repeat(101) // 101 chars
+    const [messagePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("message"), new anchor.BN(1).toArray("le", 8)],
+      program.programId
+    )
+
+    try {
+      await program.methods
+        .postMessage(content)
+        .accounts({
+          treasury: treasury.publicKey,
+          message: messagePda,
+          counter: counter.publicKey,
+          payer: payer.publicKey,
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .rpc()
+      expect.fail("Expected error due to long message")
+    } catch (err: any) {
+      expect(err.toString()).to.include("ContentTooLong")
+      console.log("✅ Correctly rejected long message")
+    }
+  })
+
+  // ❌ UNHAPPY PATH 2: Try to use wrong treasury
+  it("Fails if treasury account is incorrect", async () => {
+    const content = "gm"
+    const fakeTreasury = Keypair.generate().publicKey
+    const [messagePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("message"), new anchor.BN(2).toArray("le", 8)],
+      program.programId
+    )
+
+    try {
+      await program.methods
+        .postMessage(content)
+        .accounts({
+          treasury: fakeTreasury,
+          message: messagePda,
+          counter: counter.publicKey,
+          payer: payer.publicKey,
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .rpc()
+      expect.fail("Expected error due to wrong treasury")
+    } catch (err: any) {
+      expect(err.toString()).to.include("expected program owned") ||
+        expect(err.toString()).to.include("missing required signature")
+      console.log("✅ Correctly blocked wrong treasury")
+    }
   })
 })

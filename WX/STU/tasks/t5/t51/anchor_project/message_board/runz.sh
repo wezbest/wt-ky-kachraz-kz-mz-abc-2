@@ -46,9 +46,6 @@ ACC="WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ"
 build_1() {
     hea1 "Anchor test"
     co1="anchor build"
-    co2="solana balance --keypair wallets/wallet2.json"
-    echo -e "${BLUE}Checking Wallet Ballence for $ACC"
-    eval "$co2"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
 }
@@ -73,7 +70,7 @@ dep_1() {
 }
 
 # getting the new id
-WALLET_DIR="wallets/wallet2.json"
+WALLET_DIR="wallets/wallet4.json"
 get_id() {
     hea1 "Solana Get ID"
     co1="solana-keygen pubkey $WALLET_DIR"
@@ -135,8 +132,8 @@ sol_transfer() {
 }
 
 # ---Execution zone--- 
-# bal_check
+bal_check
 # sol_transfer
-clean_1
-# get_id
+# clean_1
+get_id
 # build_1
