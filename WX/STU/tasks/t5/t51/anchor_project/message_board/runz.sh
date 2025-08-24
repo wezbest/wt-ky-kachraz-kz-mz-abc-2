@@ -46,9 +46,9 @@ ACC="WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ"
 build_1() {
     hea1 "Anchor test"
     co1="anchor build"
-    co1="solana balance --keypair wallets/wallet2.json --devnet"
+    co2="solana balance --keypair wallets/wallet2.json --devnet"
     echo -e "${BLUE}Checking Wallet Ballence for $ACC"
-    eval "co2"
+    eval "$co2"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
 }
@@ -62,6 +62,15 @@ dep_1() {
     eval "$co2"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
+}
+
+# getting the new id
+get_id() {
+    hea1 "Solana Get ID"
+    co1=""
+    echo -e "${GREEN}$co1$NC"
+    eval "$co1"
+}
 }
 
 # ---Execution zone--- 

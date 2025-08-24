@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_lang::system_program::{Transfer, transfer};
 
 // Replace this with your actual program ID after deploy
-declare_id!("42Wr5wYojEHWwDFHRfLjyHxLSBQETJZ58XKihcm2Lfcn");
+declare_id!("WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ");
 
 #[program]
 pub mod message_board {
