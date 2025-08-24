@@ -1,0 +1,4 @@
+This is the wallet addressses 
+
+wallet2.json
+WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ
