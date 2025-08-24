@@ -1,0 +1,16 @@
+[package]
+name = "s7l2"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+cfonts = "1.2.0"
+yansi = "1.0.1"
+
+[profile.release]
+opt-level = "z"        # Optimize for size
+lto = true            # Link Time Optimization  
+codegen-units = 1     # Better optimization
+panic = "abort"       # Smaller panic handling
+strip = "symbols"     # Strip debug symbols
+debug = false         # No debug info

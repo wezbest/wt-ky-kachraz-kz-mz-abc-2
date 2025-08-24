@@ -1,0 +1,115 @@
+🔐 Creating 10 new Solana keypairs in ./solana_wallets/
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 0:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_0.json
+========================================================================
+pubkey: 6R8jqTmkxkPss4qxak6HKZSgnVqVyKCVVePM5bWn5azd
+========================================================================
+Save this seed phrase to recover your new keypair:
+ramp bird rib resist decide hood text flip scissors angry mushroom scene
+========================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 1:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_1.json
+======================================================================
+pubkey: 2RcCGxFX2dzj66k9khnC9NnLMvfZJQZV3hWpzkEiv1oz
+======================================================================
+Save this seed phrase to recover your new keypair:
+shiver then cool human phone weasel sniff time brown vendor output leg
+======================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 2:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_2.json
+===========================================================================
+pubkey: 7mMHVYwXFmGCe2SmpGs9J1tE9bJhEhWNz9f14u1gXd7f
+===========================================================================
+Save this seed phrase to recover your new keypair:
+advance text allow stereo blanket sphere ice mask receive manage lift rival
+===========================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 3:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_3.json
+===================================================================================
+pubkey: DdNuzFN4BgtEG5kVfRrUa4cLyQUR2ME8WiCmn9jjtWFg
+===================================================================================
+Save this seed phrase to recover your new keypair:
+present genuine unusual strong strategy edit kangaroo margin pepper man domain what
+===================================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 4:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_4.json
+========================================================================
+pubkey: 5Tvgp8iokyAnBWWKjuoR7LVxkahb7EHFuxgue339FKxR
+========================================================================
+Save this seed phrase to recover your new keypair:
+quality settle renew dizzy camera jump tiger message wage use upon worry
+========================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 5:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_5.json
+==========================================================================
+pubkey: 29D2WmYE8f7GSnXM4iewUvqYXvcwJzYaX2CFNBGFuv3m
+==========================================================================
+Save this seed phrase to recover your new keypair:
+liquid give float deliver father pistol glide stable claw frost pair about
+==========================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 6:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_6.json
+==============================================================================
+pubkey: FHFQ68qQE9qszTJJUPHVUe6jmeSx2tT7HEEDiwHwsR1F
+==============================================================================
+Save this seed phrase to recover your new keypair:
+hurt predict over luggage tuition milk alert real next quality fitness similar
+==============================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 7:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_7.json
+===========================================================================
+pubkey: 8JehQjqs8HVaxBhLjUYhqEACZu4jvtg5pxBirgYnG7wB
+===========================================================================
+Save this seed phrase to recover your new keypair:
+puzzle swing fossil spider cool bottom side rug husband blame exhaust fruit
+===========================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 8:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_8.json
+==================================================================================
+pubkey: 9o7EhZQL29W1v9JyUtJoyvbZFA7WAnHCNHYZEyZn3Zcd
+==================================================================================
+Save this seed phrase to recover your new keypair:
+hurt noodle actress secret parent view benefit cupboard survey illegal lava banana
+==================================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 9:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_9.json
+==========================================================================
+pubkey: 5y4VQzow8gQr3a5qRE88AzTPSzd6K2faWi9wABSHeJKH
+==========================================================================
+Save this seed phrase to recover your new keypair:
+wagon series honey child stereo useless opinion scene zebra fade spice mix
+==========================================================================
+✅ All 10 wallets created!
+📂 Keypairs saved in ./solana_wallets/
+
+📋 Public Addresses:
+Wallet 0: 6R8jqTmkxkPss4qxak6HKZSgnVqVyKCVVePM5bWn5azd - 5 sol
+Wallet 1: 2RcCGxFX2dzj66k9khnC9NnLMvfZJQZV3hWpzkEiv1oz
+Wallet 2: 7mMHVYwXFmGCe2SmpGs9J1tE9bJhEhWNz9f14u1gXd7f
+Wallet 3: DdNuzFN4BgtEG5kVfRrUa4cLyQUR2ME8WiCmn9jjtWFg
+Wallet 4: 5Tvgp8iokyAnBWWKjuoR7LVxkahb7EHFuxgue339FKxR
+Wallet 5: 29D2WmYE8f7GSnXM4iewUvqYXvcwJzYaX2CFNBGFuv3m
+Wallet 6: FHFQ68qQE9qszTJJUPHVUe6jmeSx2tT7HEEDiwHwsR1F
+Wallet 7: 8JehQjqs8HVaxBhLjUYhqEACZu4jvtg5pxBirgYnG7wB
+Wallet 8: 9o7EhZQL29W1v9JyUtJoyvbZFA7WAnHCNHYZEyZn3Zcd
+Wallet 9: 5y4VQzow8gQr3a5qRE88AzTPSzd6K2faWi9wABSHeJKH
