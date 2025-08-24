@@ -1,0 +1,37 @@
+[workspace]
+members = [
+    "crates/cli",
+    "crates/client",
+    "crates/config",
+    "crates/fuzz",
+    "crates/syn",
+    "crates/template",
+]
+exclude = ["examples/"]
+resolver = "1"
+
+
+[workspace.package]
+version = "0.10.0"
+edition = "2021"
+authors = ["Ackee Blockchain Security"]
+repository = "https://github.com/Ackee-Blockchain/trident"
+documentation = "https://ackee.xyz/trident/docs/latest/"
+description = "Trident is Rust based fuzzing framework for Solana programs written in Anchor."
+license-file = "./LICENSE"
+readme = "./README.md"
+
+[workspace.dependencies]
+# Solana
+solana-sdk = "~2.0"
+
+# ARBITRARY
+arbitrary = { version = "1.3.0", features = ["derive"] }
+
+# Honggfuzz
+honggfuzz = { version = "0.5.55" }
+
+#AFL
+afl = { version = "0.15.10" }
+
+syn = { version = "2.0", features = ["full", "parsing", "visit"] }

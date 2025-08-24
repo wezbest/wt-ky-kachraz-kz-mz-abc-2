@@ -1,0 +1,30 @@
+Usage: anchor-0.31.1 [OPTIONS] <COMMAND>
+
+Commands:
+  init         Initializes a workspace
+  build        Builds the workspace
+  expand       Expands macros (wrapper around cargo expand)
+  verify       Verifies the on-chain bytecode matches the locally compiled artifact. Run this command inside a program subdirectory, i.e., in the dir containing the program's Cargo.toml
+  test         Runs integration tests
+  new          Creates a new program
+  idl          Commands for interacting with interface definitions
+  clean        Remove all artifacts from the generated directories except program keypairs
+  deploy       Deploys each program in the workspace
+  migrate      Runs the deploy migration script
+  upgrade      Deploys, initializes an IDL, and migrates all in one command. Upgrades a single program. The configured wallet must be the upgrade authority
+  cluster      Cluster commands
+  shell        Starts a node shell with an Anchor client setup according to the local config
+  run          Runs the script defined by the current workspace's Anchor.toml
+  login        Saves an api token from the registry locally
+  publish      Publishes a verified build to the Anchor registry
+  keys         Program keypair commands
+  localnet     Localnet commands
+  account      Fetch and deserialize an account using the IDL provided
+  completions  Generates shell completions
+  help         Print this message or the help of the given subcommand(s)
+
+Options:
+      --provider.cluster <CLUSTER>  Cluster override
+      --provider.wallet <WALLET>    Wallet override
+  -h, --help                        Print help
+  -V, --version                     Print version

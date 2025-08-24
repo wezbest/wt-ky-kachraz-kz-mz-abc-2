@@ -1,0 +1,7 @@
+Actions to do:
+
+1. Examine my application 
+2. I want to add a new switch to my rust cli application
+  - This swith or option will be --version 
+  - It will print the version of the application 
+3. Examine my application to understand how to tagging and release version works

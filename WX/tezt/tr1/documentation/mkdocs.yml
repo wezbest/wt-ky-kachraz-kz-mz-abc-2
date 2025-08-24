@@ -1,0 +1,165 @@
+site_name: Trident
+site_url: https://ackee.xyz/trident/docs
+repo_url: https://github.com/Ackee-Blockchain/trident
+repo_name: Ackee-Blockchain/trident
+edit_uri: edit/master/docs
+site_description: Rust-based Fuzzing framework for Solana programs to help you ship secure code.
+site_author: Ackee Blockchain Security
+
+
+nav:
+  - Basics:
+      - "index.md"
+      - basics/installation.md
+      - basics/commands.md
+      - basics/CHANGELOG.md
+      - basics/faq.md
+      - basics/get-help.md
+  - Start Fuzzing:
+      - start-fuzzing/index.md
+      - Writting Fuzz Test:
+        - start-fuzzing/writting-fuzz-test/index.md
+        - start-fuzzing/writting-fuzz-test/instruction-accounts.md
+        - start-fuzzing/writting-fuzz-test/instruction-data.md
+        - start-fuzzing/writting-fuzz-test/remaining-accounts.md
+      - Executing Fuzz Test:
+        - start-fuzzing/executing-fuzz-test/index.md
+  - Advanced Customization:
+      - trident-advanced/index.md
+      - Transaction Hooks:
+          - trident-advanced/trident-transactions/transaction-hooks/index.md
+          - trident-advanced/trident-transactions/transaction-hooks/pre-post-execution.md
+          - trident-advanced/trident-transactions/transaction-hooks/invariant-check.md
+          - trident-advanced/trident-transactions/transaction-hooks/error-handler.md
+          - trident-advanced/trident-transactions/transaction-hooks/typed-accounts.md
+      - Multi-Instruction Transactions:
+          - trident-advanced/trident-transactions/multi-instruction-transactions/index.md
+      - Fuzzing Flows:
+          - trident-advanced/trident-transactions/trident-fuzzing-flows/index.md
+          - trident-advanced/trident-transactions/trident-fuzzing-flows/initialization.md
+          - trident-advanced/trident-transactions/trident-fuzzing-flows/flow.md
+  - API & Macro Reference:
+      - trident-api-macro/index.md
+      - Fuzz Client:
+          - trident-api-macro/trident-fuzz-client/index.md
+      - Trident Macros:
+          - trident-api-macro/trident-macros/trident-transaction.md
+          - trident-api-macro/trident-macros/trident-instruction.md
+          - trident-api-macro/trident-macros/trident-accounts.md
+          - trident-api-macro/trident-macros/trident-remaining-accounts.md
+          - trident-api-macro/trident-macros/trident-flow-executor.md
+          - trident-api-macro/trident-macros/trident-selector.md
+      - Trident Types:
+          - trident-api-macro/trident-types/fuzz-transactions.md
+          - trident-api-macro/trident-types/fuzz-accounts.md
+          - trident-api-macro/trident-types/trident-account.md
+          - trident-api-macro/trident-types/trident-pubkey.md
+          - trident-api-macro/trident-types/custom-types.md
+  - Trident Manifest:
+      - trident-manifest/index.md
+      - trident-manifest/general.md
+      - trident-manifest/afl.md
+      - trident-manifest/honggfuzz.md
+  - TridentSVM:
+      - trident-svm/index.md
+  - Trident Examples:
+      - trident-examples/trident-examples.md
+
+# Beware this is strongly dependent on names of folders , example:
+# images have to be stored within the docs/images folder
+theme:
+  # https://squidfunk.github.io/mkdocs-material/setup/
+  name: material
+  logo: 'images/logo.png'
+  favicon: 'images/favicon.ico'
+  custom_dir: docs/overrides
+  # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/?h=palette+sw#color-palette-toggle
+  palette:
+    # Palette toggle for light mode
+    - scheme: default # light mode scheme
+      primary: black
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate  # dark mode scheme
+      primary: black
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
+  features:
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-tabs
+    - navigation.tabs
+    - navigation.tabs.sticky
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#back-to-top-button
+    - navigation.top
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages
+    - navigation.indexes
+  # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/?h=content+copy#code-copy-button
+    - content.code.copy
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-sections
+    - navigation.sections
+  # may be used
+    # - navigation.footer
+  icon:
+    repo: fontawesome/brands/github
+  font:
+        text: Space Grotesk
+
+# https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/?h=social#social-links
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Ackee-Blockchain/trident
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/urRbxVcMrB
+    - icon: fontawesome/brands/twitter
+      link: https://x.com/TridentSolana
+# https://squidfunk.github.io/mkdocs-material/setup/setting-up-versioning/
+  version:
+    provider: mike
+
+# https://www.mkdocs.org/user-guide/configuration/#plugins
+plugins:
+  - search
+  - macros
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      type: timeago
+  - mike:
+      canonical_version: latest
+  - social
+
+# https://squidfunk.github.io/mkdocs-material/customization/?h=extra+css#additional-css
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/asciinema-player.css
+
+extra_javascript:
+  - js/asciinema-player.min.js
+
+
+markdown_extensions:
+  # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/#code-blocks
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - toc:
+      permalink: "#"
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.details
+
+exclude_docs: |
+  requirements.txt.
