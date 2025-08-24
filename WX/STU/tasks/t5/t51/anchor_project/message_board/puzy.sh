@@ -71,6 +71,8 @@ airdrop_wallets() {
     done
 }
 
+# Getting the pub key of wallet
+
 # === Main ===
 # create_wallets
 airdrop_wallets
