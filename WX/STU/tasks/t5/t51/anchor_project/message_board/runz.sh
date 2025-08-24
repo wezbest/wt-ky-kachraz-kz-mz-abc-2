@@ -53,6 +53,14 @@ build_1() {
     eval "$co1"
 }
 
+# Checking balance
+bal_check() {
+    hea1 "Solana Balance Check"
+    co1="solana balance --keypair wallets/wallet2.json"
+    echo -e "${GREEN}$co1$NC"
+    eval "$co1"
+}
+
 # DEploying to get the program id 
 dep_1() {
     hea1 "Anchor Check Balance and Deploy"
@@ -74,5 +82,6 @@ get_id() {
 }
 
 # ---Execution zone--- 
-clean_1
-build_1
+bal_check
+# clean_1
+# build_1
