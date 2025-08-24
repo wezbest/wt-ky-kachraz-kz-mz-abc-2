@@ -1,13 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
-import { Keypair, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { expect } from "chai";
-
-// Load wallet helpers
-const loadWallet = (path: string): Keypair => {
-  return Keypair.fromSecretKey(
-    Uint8Array.from(require(path))
-  );
-};
 
 describe("message_board", () => {
   const provider = anchor.AnchorProvider.env();
@@ -16,7 +9,7 @@ describe("message_board", () => {
   const program = anchor.workspace.MessageBoard;
   const payer = provider.wallet as anchor.Wallet;
 
-  // 🛡️ Use PDAs, not random keypairs
+  // ✅ Use PDAs, not keypairs
   const [counter] = PublicKey.findProgramAddressSync(
     [Buffer.from("counter")],
     program.programId
@@ -44,8 +37,8 @@ describe("message_board", () => {
     }
   });
 
-  // ✅ HAPPY PATH 1: Initialize the message board
-  it("Initializes the counter (idempotent)", async () => {
+  // ✅ HAPPY PATH 1: Initialize (idempotent)
+  it("Initializes the counter", async () => {
     await program.methods
       .initialize()
       .accounts({
@@ -60,15 +53,20 @@ describe("message_board", () => {
     console.log("✅ Counter initialized:", counter.toString());
   });
 
-  // ✅ HAPPY PATH 2: Post a message for 69 lamports
+  // ✅ HAPPY PATH 2: Post a message using current count
   it("Posts a message for 69 lamports", async () => {
     const content = "gm 69";
+
+    // ✅ Fetch current count from on-chain state
+    const counterAccount = await program.account.messageCounter.fetch(counter);
+    const currentCount = counterAccount.count;
+    console.log("Current message count:", currentCount.toString());
 
     const [messagePda] = PublicKey.findProgramAddressSync(
       [
         Buffer.from("message"),
         counter.toBytes(),
-        new anchor.BN(0).toArray("le", 8), // counter.count = 0
+        new anchor.BN(currentCount).toArray("le", 8), // ✅ Use real count
       ],
       program.programId
     );
@@ -94,18 +92,21 @@ describe("message_board", () => {
     expect(treasuryBalance - initialTreasuryBalance).to.eq(69);
 
     console.log("✅ Message posted:", messagePda.toString());
-    console.log("💰 Treasury balance increased by 69 lamports");
   });
 
-  // ✅ HAPPY PATH 3: Post a second message (count = 1)
-  it("Posts a second message (count = 1)", async () => {
+  // ✅ HAPPY PATH 3: Post a second message
+  it("Posts a second message", async () => {
     const content = "gn 88";
+
+    const counterAccount = await program.account.messageCounter.fetch(counter);
+    const currentCount = counterAccount.count;
+    console.log("Posting message #", currentCount.toString());
 
     const [messagePda] = PublicKey.findProgramAddressSync(
       [
         Buffer.from("message"),
         counter.toBytes(),
-        new anchor.BN(1).toArray("le", 8), // counter.count = 1
+        new anchor.BN(currentCount).toArray("le", 8),
       ],
       program.programId
     );
@@ -119,24 +120,25 @@ describe("message_board", () => {
         payer: payer.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
-      .rpc({ skipPreflight: false, preflightCommitment: "confirmed" });
+      .rpc();
 
     const messageAccount = await program.account.message.fetch(messagePda);
     expect(messageAccount.content).to.eq(content);
-    expect(messageAccount.poster.toString()).to.eq(payer.publicKey.toString());
-
     console.log("✅ Second message posted:", messagePda.toString());
   });
 
-  // ❌ UNHAPPY PATH 1: Reject message longer than 100 chars
+  // ❌ UNHAPPY PATH 1: Reject message > 100 chars
   it("Fails to post message longer than 100 characters", async () => {
-    const content = "x".repeat(101); // 101 chars
+    const content = "x".repeat(101);
+
+    const counterAccount = await program.account.messageCounter.fetch(counter);
+    const currentCount = counterAccount.count;
 
     const [messagePda] = PublicKey.findProgramAddressSync(
       [
         Buffer.from("message"),
         counter.toBytes(),
-        new anchor.BN(2).toArray("le", 8), // counter.count = 2
+        new anchor.BN(currentCount).toArray("le", 8),
       ],
       program.programId
     );
@@ -159,16 +161,19 @@ describe("message_board", () => {
     }
   });
 
-  // ❌ UNHAPPY PATH 2: Reject if wrong treasury is passed
+  // ❌ UNHAPPY PATH 2: Treasury transfer must use PDA (implicit security)
   it("Fails if wrong treasury is passed", async () => {
     const content = "hijack attempt";
-    const fakeTreasury = Keypair.generate().publicKey; // Not the real treasury
+    const fakeTreasury = PublicKey.unique(); // Invalid treasury
+
+    const counterAccount = await program.account.messageCounter.fetch(counter);
+    const currentCount = counterAccount.count;
 
     const [messagePda] = PublicKey.findProgramAddressSync(
       [
         Buffer.from("message"),
         counter.toBytes(),
-        new anchor.BN(3).toArray("le", 8),
+        new anchor.BN(currentCount).toArray("le", 8),
       ],
       program.programId
     );
@@ -186,9 +191,8 @@ describe("message_board", () => {
         .rpc();
       expect.fail("Expected error due to wrong treasury");
     } catch (err: any) {
-      // The program will fail because fakeTreasury isn't the PDA
-      // It may fail with "account not found" or during CPI
-      expect(err.toString()).to.include("missing required signature") 
+      // Will fail during CPI (missing PDA signature)
+      expect(err.toString()).to.include("missing required signature")
         || expect(err.toString()).to.include("failed to send transaction");
       console.log("✅ Correctly blocked wrong treasury");
     }

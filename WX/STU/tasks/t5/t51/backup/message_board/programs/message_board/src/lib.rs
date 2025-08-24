@@ -8,13 +8,11 @@ declare_id!("42Wr5wYojEHWwDFHRfLjyHxLSBQETJZ58XKihcm2Lfcn");
 pub mod message_board {
     use super::*;
 
-    /// Initialize the message board with a counter at zero.
-    /// Can only be called once (idempotent via account existence check).
+    /// Initialize the message board. Idempotent: only sets count=0 if not already set.
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         let counter = &mut ctx.accounts.counter;
         require!(counter.count == 0, ErrorCode::AlreadyInitialized);
         counter.count = 0;
-
         msg!("✅ Message board initialized! 69 lamports to post.");
         Ok(())
     }
@@ -29,7 +27,9 @@ pub mod message_board {
             from: ctx.accounts.payer.to_account_info(),
             to: ctx.accounts.treasury.to_account_info(),
         };
-        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
+        let seeds = &[b"treasury", &[]];
+        let signer_seeds = &[&seeds[..]];
+        let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer_seeds);
         transfer(cpi_ctx, 69)?;
 
         // ✅ Store message
@@ -38,7 +38,7 @@ pub mod message_board {
         message.timestamp = Clock::get()?.unix_timestamp;
         message.poster = ctx.accounts.payer.key();
 
-        // ✅ Increment counter with overflow check
+        // ✅ Increment counter safely
         let counter = &mut ctx.accounts.counter;
         counter.count = counter
             .count
@@ -64,10 +64,10 @@ pub mod message_board {
 #[derive(Accounts)]
 pub struct Initialize<'info> {
     #[account(
-        init_if_needed, // ✅ Only init if not already created
+        init_if_needed,
         payer = payer,
         space = 8 + 8,
-        seeds = [b"counter"], // 🔐 Fixed PDA for counter
+        seeds = [b"counter"],
         bump
     )]
     pub counter: Account<'info, MessageCounter>,
@@ -89,7 +89,7 @@ pub struct PostMessage<'info> {
     )]
     pub treasury: SystemAccount<'info>,
 
-    /// ✅ Message PDA includes counter address to avoid collisions across boards
+    /// ✅ Message PDA includes counter address + current count
     #[account(
         init,
         payer = payer,
