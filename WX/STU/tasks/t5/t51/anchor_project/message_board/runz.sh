@@ -56,7 +56,7 @@ build_1() {
 # Checking balance
 bal_check() {
     hea1 "Solana Balance Check"
-    co1="solana balance --keypair wallets/wallet2.json"
+    co1="solana balance --keypair wallets/wallet1.json"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
 }
@@ -85,45 +85,57 @@ get_id() {
 # --- Transferring sol --- 
 
 SOL_FROM_KEYPAIR="wallets/wallet1.json"
-SOL_TO_ADDRESS="wallets/walletaddress.txt"
+SOL_TO_ADDRESS="WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ"
 SOL_AMOUNT_SOL="1.5"
-SOL_CLUSTER="--devnet" 
+SOL_CLUSTER="--devnet"
+SOL_RPC_URL="https://api.devnet.solana.com"
 
 sol_transfer() {
-  local from_keypair="$SOL_FROM_KEYPAIR"
-  local to_address="$SOL_TO_ADDRESS"
-  local amount_sol="$SOL_AMOUNT_SOL"
-  local cluster="${SOL_CLUSTER:---devnet}"
-  local url="https://api.devnet.solana.com"
+  # Read variables (expected to be set externally)
+  local FROM_KEYPAIR="${SOL_FROM_KEYPAIR}"
+  local TO_ADDRESS="${SOL_TO_ADDRESS}"
+  local AMOUNT_SOL="${SOL_AMOUNT_SOL}"
+  local CLUSTER="${SOL_CLUSTER:-https://api.devnet.solana.com}"
+  local RPC_URL="${SOL_RPC_URL:-https://api.devnet.solana.com}"
 
-  # Validate inputs
-  if [ -z "$from_keypair" ] || [ -z "$to_address" ] || [ -z "$amount_sol" ]; then
-    echo "Error: Missing required variables. Please set:"
-    echo "  SOL_FROM_KEYPAIR = path to sender's keypair file"
-    echo "  SOL_TO_ADDRESS   = recipient's wallet address"
-    echo "  SOL_AMOUNT_SOL   = amount of SOL to send"
-    echo "  SOL_CLUSTER      = network (optional, default: --devnet)"
+  # Validate required inputs
+  if [[ -z "$FROM_KEYPAIR" || -z "$TO_ADDRESS" || -z "$AMOUNT_SOL" ]]; then
+    echo "Error: Missing required environment variables." >&2
+    echo "Please set:" >&2
+    echo "  SOL_FROM_KEYPAIR = path to sender's keypair file" >&2
+    echo "  SOL_TO_ADDRESS   = recipient's wallet address (base58)" >&2
+    echo "  SOL_AMOUNT_SOL   = amount of SOL to send (e.g. 0.1)" >&2
+    echo "Optional:" >&2
+    echo "  SOL_CLUSTER      = cluster (e.g. --devnet, --testnet)" >&2
+    echo "  SOL_RPC_URL      = custom RPC URL (default: $RPC_URL)" >&2
     return 1
   fi
 
-  # Check if keypair file exists
-  if [ ! -f "$from_keypair" ]; then
-    echo "Error: Keypair file not found: $from_keypair"
+  # Validate keypair file exists
+  if [[ ! -f "$FROM_KEYPAIR" ]]; then
+    echo "Error: Keypair file not found: $FROM_KEYPAIR" >&2
+    return 1
+  fi
+
+  # Validate amount is a number
+  if ! [[ "$AMOUNT_SOL" =~ ^[0-9]+\.?[0-9]*$ ]]; then
+    echo "Error: Invalid amount: $AMOUNT_SOL (must be a number)" >&2
     return 1
   fi
 
   # Execute transfer
   solana transfer \
-    --keypair "$from_keypair" \
-    "$to_address" \
-    "$amount_sol" \
-    --url "$url" \
-    --fee-payer "$from_keypair" \
-    --no-wait
+    --keypair "$FROM_KEYPAIR" \
+    --url "$RPC_URL" \
+    --fee-payer "$FROM_KEYPAIR" \
+    "$TO_ADDRESS" \
+    "$AMOUNT_SOL" \
+    --no-wait \
+    --allow-unfunded-recipient
 }
 
 # ---Execution zone--- 
 bal_check
-sol_transfer
+# sol_transfer
 # clean_1
 # build_1
