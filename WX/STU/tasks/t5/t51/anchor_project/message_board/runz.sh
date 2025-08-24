@@ -85,8 +85,8 @@ get_id() {
 # --- Transferring sol --- 
 
 SOL_FROM_KEYPAIR="wallets/wallet1.json"
-SOL_TO_ADDRESS="42Wr5wYojEHWwDFHRfLjyHxLSBQETJZ58XKihcm2Lfcn"
-SOL_AMOUNT_SOL="0.5"
+SOL_TO_ADDRESS="wallets/walletaddress.txt"
+SOL_AMOUNT_SOL="1.5"
 SOL_CLUSTER="--devnet" 
 
 sol_transfer() {
@@ -117,7 +117,6 @@ sol_transfer() {
     --keypair "$from_keypair" \
     "$to_address" \
     "$amount_sol" \
-    "$cluster" \
     --url "$url" \
     --fee-payer "$from_keypair" \
     --no-wait
@@ -125,5 +124,6 @@ sol_transfer() {
 
 # ---Execution zone--- 
 bal_check
+sol_transfer
 # clean_1
 # build_1
