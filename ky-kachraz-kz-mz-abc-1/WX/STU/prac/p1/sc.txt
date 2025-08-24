@@ -1,0 +1,115 @@
+Creating 10 new Solana keypairs in ./solana_wallets/
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 0:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_0.json
+=======================================================================
+pubkey: EnuSJrcybZxaJbz9gxPKkZw5r1m6ALmkpXezJGq4tqQS
+=======================================================================
+Save this seed phrase to recover your new keypair:
+motion bread earn step half series first card kitten sentence night air
+=======================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 1:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_1.json
+===========================================================================
+pubkey: EmegVXZ23brspeUFDSmzide8zdgUG3ct2PCLbYo6L5qy
+===========================================================================
+Save this seed phrase to recover your new keypair:
+chaos harbor manage jealous carbon kit brain alert nurse badge salmon swear
+===========================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 2:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_2.json
+================================================================================
+pubkey: BnUjCbCTvhKVuUg597aXCGJUgy4bwzGco23vqcftEfbE
+================================================================================
+Save this seed phrase to recover your new keypair:
+renew calm sister congress world catalog myth dance chair fitness latin security
+================================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 3:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_3.json
+===============================================================================
+pubkey: FumW6CyJtrNB4HQSGFKtchP5G8QjkAx3XHgCVhy1NjEV
+===============================================================================
+Save this seed phrase to recover your new keypair:
+metal knife lamp enrich stumble distance bless alarm february mobile erode urge
+===============================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 4:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_4.json
+===============================================================================
+pubkey: BckhQYCM9g6WR2caVHWcUY8nzZqpnAAsEhN5JhnxXi58
+===============================================================================
+Save this seed phrase to recover your new keypair:
+wasp spell hobby arrive shaft wrist sausage arrest empty awesome luggage barely
+===============================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 5:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_5.json
+==========================================================================
+pubkey: 349nhtJ2avLXEhsds6KXtQH5yJG86Nso1hEXyTf9zsx9
+==========================================================================
+Save this seed phrase to recover your new keypair:
+maze claw tiny useful woman occur round tube amazing hollow orchard permit
+==========================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 6:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_6.json
+====================================================================
+pubkey: 5jTFejfo8Liq7DMub8ffqMW9FsPVD9cE9ShrQoHJziYp
+====================================================================
+Save this seed phrase to recover your new keypair:
+cradle depth stick load tiny club oven amount mouse puzzle icon soap
+====================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 7:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_7.json
+========================================================================
+pubkey: 9NbpNLPRKUch42BvaaPT23HqQNLSPH8uCzkaxxUFDAeE
+========================================================================
+Save this seed phrase to recover your new keypair:
+hurt position cloth beach garlic label coast guide jacket guess bus inch
+========================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 8:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_8.json
+=============================================================================
+pubkey: 7FXR4sLzsHWdmBZNNwBZVNmzmAgWewPJLeqnDJ3rxQ37
+=============================================================================
+Save this seed phrase to recover your new keypair:
+cube patch blush matrix crucial symbol account happy rain weekend strike home
+=============================================================================
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Wallet 9:
+Generating a new keypair
+Wrote new keypair to solana_wallets/wallet_9.json
+=========================================================================
+pubkey: Dkh4dKZhYofzAtJLEcXnPDswaG4L3guGNJpZYXYpK588
+=========================================================================
+Save this seed phrase to recover your new keypair:
+giant rack review fame submit apart ugly horror choice write media across
+=========================================================================
+✅ All 10 wallets created!
+📂 Keypairs saved in ./solana_wallets/
+
+📋 Public Addresses:
+Wallet 0: EnuSJrcybZxaJbz9gxPKkZw5r1m6ALmkpXezJGq4tqQS
+Wallet 1: EmegVXZ23brspeUFDSmzide8zdgUG3ct2PCLbYo6L5qy
+Wallet 2: BnUjCbCTvhKVuUg597aXCGJUgy4bwzGco23vqcftEfbE
+Wallet 3: FumW6CyJtrNB4HQSGFKtchP5G8QjkAx3XHgCVhy1NjEV
+Wallet 4: BckhQYCM9g6WR2caVHWcUY8nzZqpnAAsEhN5JhnxXi58
+Wallet 5: 349nhtJ2avLXEhsds6KXtQH5yJG86Nso1hEXyTf9zsx9
+Wallet 6: 5jTFejfo8Liq7DMub8ffqMW9FsPVD9cE9ShrQoHJziYp
+Wallet 7: 9NbpNLPRKUch42BvaaPT23HqQNLSPH8uCzkaxxUFDAeE
+Wallet 8: 7FXR4sLzsHWdmBZNNwBZVNmzmAgWewPJLeqnDJ3rxQ37
+Wallet 9: Dkh4dKZhYofzAtJLEcXnPDswaG4L3guGNJpZYXYpK588

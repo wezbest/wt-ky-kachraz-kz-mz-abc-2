@@ -1,0 +1,41 @@
+[H[2J[3J[0;36m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[0;35mChecking binary size with cargo bloat[0m
+[0;36m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[0;32m Executing cargo bloat --release -n 10
+[?] Biggest functions in binary [0m
+ File  .text     Size  Crate Name
+ 1.4%   8.8%  29.6KiB cfonts cfonts::render::render
+ 1.0%   6.0%  20.0KiB    std std::backtrace_rs::symbolize::gimli::Cache::with_...
+ 0.6%   3.6%  11.9KiB    std std::backtrace_rs::symbolize::gimli::Context::new
+ 0.4%   2.7%   9.2KiB    std gimli::read::dwarf::Unit<R>::new
+ 0.4%   2.6%   8.7KiB    std addr2line::line::LazyLines::borrow
+ 0.3%   2.1%   7.0KiB    std miniz_oxide::inflate::core::decompress
+ 0.3%   1.9%   6.3KiB    std addr2line::unit::ResUnit<R>::find_function_or_loc...
+ 0.2%   1.4%   4.6KiB    std gimli::read::unit::parse_attribute
+ 0.2%   1.4%   4.6KiB    std core::fmt::float::float_to_decimal_common_exact
+ 0.2%   1.3%   4.4KiB    std addr2line::function::Function<R>::parse_children
+10.8%  67.4% 226.6KiB        And 694 smaller methods. Use -n N to show more.
+16.0% 100.0% 336.0KiB        .text section size, the file size is 2.0MiB
+[0;36m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[0;32m Executing cargo bloat --release --crates
+[?] Biggest Crates [0m
+ File  .text     Size Crate
+11.9%  74.0% 248.6KiB std
+ 2.8%  17.5%  58.7KiB cfonts
+ 0.5%   2.9%   9.8KiB serde_json
+ 0.3%   2.1%   7.1KiB rand_chacha
+ 0.2%   0.9%   3.2KiB memchr
+ 0.1%   0.4%   1.3KiB [Unknown]
+ 0.1%   0.4%   1.3KiB rand
+ 0.0%   0.3%    1007B s7l2
+ 0.0%   0.2%     639B ryu
+ 0.0%   0.2%     635B getrandom
+ 0.0%   0.1%     347B __rustc
+ 0.0%   0.1%     174B rand_core
+ 0.0%   0.0%      92B rustix
+ 0.0%   0.0%      50B is_ci
+ 0.0%   0.0%      23B serde
+16.0% 100.0% 336.0KiB .text section size, the file size is 2.0MiB
+
+Note: numbers above are a result of guesswork. They are not 100% correct and never will be.
+[0;36m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m

@@ -1,0 +1,8 @@
+# Objective Complete the TODO Sections in the solana program in t3/
+
+1. Examint the files in t3/
+2. Find all the TODO sections and fill the relevant code. 
+3. Then run the cargo tests ensuring all tests are passing. I have a docker container called ackeeblockhain/school-of-solana , which has all the necessary dependencies , so get into it with an interactive shell , and run the tests. Dont re execute the docker pul and setup
+4. Make a detailed report inside a directory called rpt/, which has markdown file with todays date and time appended , and in the file itseld , in the header , add todays date , the query asked , the model used, the actions done and the impact.
+5. Note the project uses yarn 
+6. Search online for the ansers, but dont make up shit.
