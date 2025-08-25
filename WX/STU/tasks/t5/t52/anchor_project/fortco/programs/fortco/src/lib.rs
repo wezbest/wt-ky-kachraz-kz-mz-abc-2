@@ -61,7 +61,8 @@ pub mod fortco {
         
         // Store the selected fortune and user's public key in the account
         fortune_data.fortune = fortunes[fortune_index].to_string();
-        fortune_data.user = *user.key();
+        // Fixed: user.key() returns a Pubkey, no need to dereference
+        fortune_data.user = user.key();
         
         // Log the delivered fortune for debugging (visible in transaction logs)
         msg!("Fortune delivered: {}", fortune_data.fortune);
