@@ -64,7 +64,7 @@ bal_check() {
     
     wallets=(
         "wallets/w1.json"
-        "wallets/treasory.json"
+        "wallets/treasury.json"
     )
     
     # Loop through each wallet and check balance
@@ -81,7 +81,7 @@ bal_check() {
 dep_1() {
     hea1 "Anchor Check Balance and Deploy"
     co1="anchor deploy"
-    co2="solana balance --keypair wallets/wallet2.json"
+    co2="solana balance --keypair wallets/w1.json"
     echo -e "${BLUE}Checking Wallet Ballence for $ACC"
     eval "$co2"
     echo -e "${GREEN}$co1$NC"
@@ -108,8 +108,8 @@ anchor_test1() {
 
 # --- Transferring sol --- 
 sol_transfer() {
-  local FROM_WALLET="../../shit/wallet5.json"
-  local TO_WALLET="wallets/w1.json"
+  local FROM_WALLET="../../shit/wallet4.json"
+  local TO_WALLET="wallets/treasury.json"
   
   solana transfer \
     --keypair "$FROM_WALLET" \
@@ -123,7 +123,8 @@ sol_transfer() {
 
 # --- Sequencer --- 
 seq1() {
-    bal_check
+    build_1
+    dep_1
     anchor_test1 
     bal_check
 }
@@ -131,5 +132,3 @@ seq1() {
 
 # ---Execution zone--- 
 # seq1
-bal_check
-# sol_transfer 2 
