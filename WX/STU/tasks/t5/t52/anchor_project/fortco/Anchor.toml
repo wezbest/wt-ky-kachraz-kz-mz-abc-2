@@ -5,15 +5,20 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.localnet]
-fortco = ""
+# Remove or comment out [programs.localnet] since you're using devnet
+# [programs.localnet]
+# fortco = ""
+
+# Add programs.devnet section with your program ID
+[programs.devnet]
+fortco = "YOUR_PROGRAM_ID_HERE"  # Replace with your actual program ID
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
-wallet = "wallets/w1.json"
+cluster = "devnet"  # Already correctly set to devnet
+wallet = "wallets/w1.json"  # Ensure this wallet has devnet SOL
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
