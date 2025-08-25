@@ -64,7 +64,7 @@ export const FortuneCookie = () => {
 
       // 4. Create Program Instance
       // This links the IDL, Program ID, and Provider to interact with the on-chain program
-      const program = new Program(idl, programID, provider)
+      const program = new Program(idl, provider)
       console.log("Program instance created.")
 
       // 5. Derive the Program Derived Address (PDA)
