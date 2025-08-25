@@ -124,31 +124,27 @@ sol_transfer() {
 
 # Transfers with addresses 
 sol_transfer_address() {
-  # Hardcoded addresses and amount
-  local FROM_ADDRESS="7qdQL8UzEvdDEjiP9bBe6HVGAgPQiShmD69qh3xfBUpS"
+  # Hardcoded values - use keypair file paths
+  local FROM_KEYPAIR="wallets/treasury.json"
   local TO_ADDRESS="63tb8Go8gngmCCFPBznMharUHr1mmE5hCQUh4xb8nrfK"
   local AMOUNT="2"
-  local FEE_PAYER="$FROM_ADDRESS"  # Default fee payer is sender
   
-  # Validate Solana address format (basic check)
-  if [[ ! "$FROM_ADDRESS" =~ ^[1-9A-HJ-NP-Za-km-z]{32,44}$ ]]; then
-    echo "Error: Invalid FROM address format: $FROM_ADDRESS"
+  # Validate keypair file exists
+  if [[ ! -f "$FROM_KEYPAIR" ]]; then
+    echo "❌ Error: Keypair file not found: $FROM_KEYPAIR"
     return 1
   fi
   
-  if [[ ! "$TO_ADDRESS" =~ ^[1-9A-HJ-NP-Za-km-z]{32,44}$ ]]; then
-    echo "Error: Invalid TO address format: $TO_ADDRESS"
-    return 1
-  fi
+  # Get the public address from the keypair for display
+  local FROM_ADDRESS=$(solana-keygen pubkey "$FROM_KEYPAIR")
   
   echo "🔄 Transferring $AMOUNT SOL from $FROM_ADDRESS to $TO_ADDRESS"
-  echo "💰 Fee payer: $FEE_PAYER"
+  echo "💰 Using keypair: $FROM_KEYPAIR"
   
   # Execute the transfer
   solana transfer \
-    --from "$FROM_ADDRESS" \
+    --keypair "$FROM_KEYPAIR" \
     --url https://api.devnet.solana.com \
-    --fee-payer "$FEE_PAYER" \
     "$TO_ADDRESS" \
     "$AMOUNT" \
     --allow-unfunded-recipient

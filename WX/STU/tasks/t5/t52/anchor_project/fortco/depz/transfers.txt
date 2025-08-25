@@ -1,3 +1,9 @@
 🔄 Transferring 2 SOL from 7qdQL8UzEvdDEjiP9bBe6HVGAgPQiShmD69qh3xfBUpS to 63tb8Go8gngmCCFPBznMharUHr1mmE5hCQUh4xb8nrfK
 💰 Fee payer: 7qdQL8UzEvdDEjiP9bBe6HVGAgPQiShmD69qh3xfBUpS
 ❌ Transfer failed
+🔄 Transferring 2 SOL from 3wjzNv4wjGbpfNWfu4CmLQn4967jrrxGDMzuKuytfwA9 to 63tb8Go8gngmCCFPBznMharUHr1mmE5hCQUh4xb8nrfK
+💰 Using keypair: wallets/treasury.json
+
+Signature: 5S6xCKTjUoigxD4T2DMZRieU9q282joM4GgtZ622aPY7rJftndRvbYY76pekoBxuHUQBcB6HBu1czmqqsviuSdqG
+
+✅ Transfer completed successfully!
