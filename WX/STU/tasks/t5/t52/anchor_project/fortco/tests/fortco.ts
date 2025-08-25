@@ -1,7 +1,7 @@
 // tests/fortco.ts
 import * as anchor from "@coral-xyz/anchor"
 import { Program } from "@coral-xyz/anchor"
-import { Keypair, PublicKey } from "@solana/web3.js"
+import { Keypair, PublicKey, Transaction } from "@solana/web3.js"
 import { Fortco } from "../target/types/fortco"
 
 describe("fortco", () => {
@@ -37,13 +37,14 @@ describe("fortco", () => {
     const user = Keypair.generate()
 
     // Transfer exactly 2 lamports to the user from the provider wallet
-    const transferTx = await provider.sendAndConfirm(
-      anchor.web3.SystemProgram.transfer({
-        fromPubkey: provider.wallet.publicKey,
-        toPubkey: user.publicKey,
-        lamports: 2, // Only 2 lamports required
-      })
-    )
+    const transferIx = anchor.web3.SystemProgram.transfer({
+      fromPubkey: provider.wallet.publicKey,
+      toPubkey: user.publicKey,
+      lamports: 2, // Only 2 lamports required
+    })
+
+    const transferTx = new Transaction().add(transferIx)
+    await provider.sendAndConfirm(transferTx, [])
 
     // Derive the PDA for the fortune account using the user's public key
     const [fortunePda] = PublicKey.findProgramAddressSync(
@@ -86,13 +87,14 @@ describe("fortco", () => {
     const user = Keypair.generate()
 
     // Transfer 1000 lamports to the user (more than required)
-    const transferTx = await provider.sendAndConfirm(
-      anchor.web3.SystemProgram.transfer({
-        fromPubkey: provider.wallet.publicKey,
-        toPubkey: user.publicKey,
-        lamports: 1000, // More than required 2 lamports
-      })
-    )
+    const transferIx = anchor.web3.SystemProgram.transfer({
+      fromPubkey: provider.wallet.publicKey,
+      toPubkey: user.publicKey,
+      lamports: 1000, // More than required 2 lamports
+    })
+
+    const transferTx = new Transaction().add(transferIx)
+    await provider.sendAndConfirm(transferTx, [])
 
     // Derive the PDA for the fortune account
     const [fortunePda] = PublicKey.findProgramAddressSync(
@@ -135,13 +137,14 @@ describe("fortco", () => {
     const user = Keypair.generate()
 
     // Transfer only 1 lamport to the user (less than required 2 lamports)
-    const transferTx = await provider.sendAndConfirm(
-      anchor.web3.SystemProgram.transfer({
-        fromPubkey: provider.wallet.publicKey,
-        toPubkey: user.publicKey,
-        lamports: 1, // Less than required 2 lamports
-      })
-    )
+    const transferIx = anchor.web3.SystemProgram.transfer({
+      fromPubkey: provider.wallet.publicKey,
+      toPubkey: user.publicKey,
+      lamports: 1, // Less than required 2 lamports
+    })
+
+    const transferTx = new Transaction().add(transferIx)
+    await provider.sendAndConfirm(transferTx, [])
 
     // Derive the PDA for the fortune account
     const [fortunePda] = PublicKey.findProgramAddressSync(
@@ -176,13 +179,14 @@ describe("fortco", () => {
     const user = Keypair.generate()
 
     // Transfer 1000 lamports to the user (more than enough)
-    const transferTx = await provider.sendAndConfirm(
-      anchor.web3.SystemProgram.transfer({
-        fromPubkey: provider.wallet.publicKey,
-        toPubkey: user.publicKey,
-        lamports: 1000, // More than required 2 lamports
-      })
-    )
+    const transferIx = anchor.web3.SystemProgram.transfer({
+      fromPubkey: provider.wallet.publicKey,
+      toPubkey: user.publicKey,
+      lamports: 1000, // More than required 2 lamports
+    })
+
+    const transferTx = new Transaction().add(transferIx)
+    await provider.sendAndConfirm(transferTx, [])
 
     // Derive the PDA for the fortune account
     const [fortunePda] = PublicKey.findProgramAddressSync(
