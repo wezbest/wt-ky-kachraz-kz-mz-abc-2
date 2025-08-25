@@ -7,7 +7,7 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::entrypoint::ProgramResult;
 
 // Program ID will be replaced during build/deployment
-declare_id!("FORTUNE_PROGRAM_ID");
+declare_id!("ETnL1ThTjZje1qs2mQEPzworCzbGq6oVk6Neu7pKQssh");
 
 /// Main program module containing all instruction handlers
 #[program]
