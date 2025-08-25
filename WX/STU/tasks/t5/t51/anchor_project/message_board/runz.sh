@@ -51,9 +51,23 @@ build_1() {
 # Checking balance
 bal_check() {
     hea1 "Solana Balance Check"
-    co1="solana balance -k wallets/wallet3.json --url https://api.devnet.solana.com"
-    echo -e "${GREEN}$co1$NC"
-    eval "$co1"
+    
+    # Array of wallet file paths
+    wallets=(
+        "wallets/wallet1.json"
+        "wallets/wallet2.json" 
+        "wallets/wallet3.json"
+        "wallets/wallet4.json"
+    )
+    
+    # Loop through each wallet and check balance
+    for wallet in "${wallets[@]}"; do
+        echo -e "${YELLOW}Checking balance for: $wallet$NC"
+        co1="solana balance -k $wallet --url https://api.devnet.solana.com"
+        echo -e "${GREEN}$co1$NC"
+        eval "$co1"
+        echo "" # Add empty line for readability
+    done
 }
 
 # DEploying to get the program id 

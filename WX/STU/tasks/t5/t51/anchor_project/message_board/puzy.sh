@@ -3,7 +3,7 @@
 
 # === Config ===
 WALLET_DIR="wallets"   # <-- all wallets stored here
-WALLETS=("wallet3.json")  # <-- list of wallets you want to manage
+WALLETS=("w1.json" "treasury.json")  # <-- list of wallets you want to manage
 
 # Colors
 RED='\033[0;31m'
