@@ -53,7 +53,7 @@ build_1() {
 # Checking balance
 bal_check() {
     hea1 "Solana Balance Check"
-    co1="solana balance -k wallets/wallet4.json --url https://api.devnet.solana.com"
+    co1="solana balance -k ../../shit/wallet1.json --url https://api.devnet.solana.com"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
 }
@@ -99,6 +99,6 @@ sol_transfer() {
 # ---Execution zone--- 
 bal_check
 # sol_transfer 
-clean_1
+# clean_1
 # get_id
-build_1
+# build_1
