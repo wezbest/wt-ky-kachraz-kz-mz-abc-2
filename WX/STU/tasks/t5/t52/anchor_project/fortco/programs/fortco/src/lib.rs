@@ -6,12 +6,12 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::entrypoint::ProgramResult;
 
-// Program ID will be replaced during build/deployment
-declare_id!("ETnL1ThTjZje1qs2mQEPzworCzbGq6oVk6Neu7pKQssh");
+// Program ID will be replaced with actual ID during build
+declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"); // Replace with your actual program ID
 
 /// Main program module containing all instruction handlers
 #[program]
-pub mod fortune_cookie {
+pub mod fortco {
     use super::*;
 
     /// Instruction handler for getting a fortune
@@ -39,7 +39,7 @@ pub mod fortune_cookie {
         // Check if user has sufficient balance
         if **user.to_account_info().lamports.borrow() < required_lamports {
             // Return custom error if payment is insufficient
-            return Err(ErrorCode::InsufficientPayment.into());
+            return Err(error!(ErrorCode::InsufficientPayment).into());
         }
         
         // Array of possible fortunes - can be expanded for more variety
@@ -56,7 +56,7 @@ pub mod fortune_cookie {
         
         // Generate deterministic index using Solana-compatible approach
         // Using the first byte of user's public key for pseudo-randomness
-        let fortune_index = Self::generate_deterministic_index(user.key());
+        let fortune_index = generate_deterministic_index(user.key());
         
         // Store the selected fortune and user's public key in the account
         fortune_data.fortune = fortunes[fortune_index].to_string();
@@ -70,31 +70,28 @@ pub mod fortune_cookie {
     }
 }
 
-// Implementation of helper methods for the fortune_cookie module
-impl fortune_cookie {
-    /// Generates a deterministic index for fortune selection
-    /// 
-    /// # Arguments
-    /// * `user_key` - Public key of the user requesting the fortune
-    /// 
-    /// # Returns
-    /// * `usize` - Index within the fortunes array bounds (0-7)
-    /// 
-    /// # Note
-    /// This uses a simple deterministic approach since true randomness
-    /// is challenging in Solana's deterministic environment.
-    fn generate_deterministic_index(user_key: &Pubkey) -> usize {
-        // Convert user's public key to bytes
-        let user_bytes = user_key.to_bytes();
-        
-        // Use the first byte of the public key to create a simple hash
-        // This provides pseudo-randomness that varies by user
-        let index_byte = user_bytes[0] as usize;
-        
-        // Modulo operation to ensure index stays within array bounds (0-7)
-        // 8 is the length of our fortunes array
-        index_byte % 8
-    }
+/// Generates a deterministic index for fortune selection
+/// 
+/// # Arguments
+/// * `user_key` - Public key of the user requesting the fortune
+/// 
+/// # Returns
+/// * `usize` - Index within the fortunes array bounds (0-7)
+/// 
+/// # Note
+/// This uses a simple deterministic approach since true randomness
+/// is challenging in Solana's deterministic environment.
+fn generate_deterministic_index(user_key: &Pubkey) -> usize {
+    // Convert user's public key to bytes
+    let user_bytes = user_key.to_bytes();
+    
+    // Use the first byte of the public key to create a simple hash
+    // This provides pseudo-randomness that varies by user
+    let index_byte = user_bytes[0] as usize;
+    
+    // Modulo operation to ensure index stays within array bounds (0-7)
+    // 8 is the length of our fortunes array
+    index_byte % 8
 }
 
 /// Account validation structure for the get_fortune instruction

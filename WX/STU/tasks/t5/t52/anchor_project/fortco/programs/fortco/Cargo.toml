@@ -15,9 +15,14 @@ no-entrypoint = []
 no-idl = []
 no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build"]
-
+# Add these features to resolve the warnings
+custom-heap = []
+custom-panic = []
+anchor-debug = []
 
 [dependencies]
 anchor-lang = "0.31.1"
 
-
+# Add this section to suppress the cfg warnings
+[lints.rust]
+unexpected_cfgs = { level = "allow" }
