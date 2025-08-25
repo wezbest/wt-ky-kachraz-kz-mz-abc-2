@@ -123,6 +123,8 @@ sol_transfer() {
 
 # --- Sequencer --- 
 seq1() {
+    bal_check
+    clean_1
     build_1
     dep_1
     anchor_test1 
@@ -131,4 +133,4 @@ seq1() {
 
 
 # ---Execution zone--- 
-# seq1
+seq1
