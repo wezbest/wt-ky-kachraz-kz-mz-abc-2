@@ -1,6 +1,6 @@
 //! Fortune Cookie Solana Program
 //! 
-//! This program allows users to pay 2 SOL to receive a deterministically generated humorous fortune.
+//! This program allows users to pay 2 lamports to receive a deterministically generated humorous fortune.
 //! Designed for Devnet use only.
 
 use anchor_lang::prelude::*;
@@ -23,7 +23,7 @@ pub mod fortco {
     /// * `ProgramResult` - Success or error
     /// 
     /// # Checks
-    /// * User has paid 2 SOL (wallet balance check)
+    /// * User has paid 2 lamports (wallet balance check)
     /// * Fortune account is properly initialized
     pub fn get_fortune(ctx: Context<GetFortune>) -> ProgramResult {
         // Get mutable reference to the fortune data account
@@ -32,9 +32,8 @@ pub mod fortco {
         // Get reference to the user account (signer)
         let user = &ctx.accounts.user;
         
-        // Verify 2 SOL payment by checking user's wallet balance
-        // Note: 1 SOL = 1,000,000,000 lamports
-        let required_lamports = 2 * 1_000_000_000; // 2 SOL in lamports
+        // Verify 2 lamports payment by checking user's wallet balance
+        let required_lamports = 2; // Changed from 2 * 1_000_000_000 to just 2 lamports
         
         // Check if user has sufficient balance
         if **user.to_account_info().lamports.borrow() < required_lamports {
@@ -56,12 +55,10 @@ pub mod fortco {
         
         // Generate deterministic index using Solana-compatible approach
         // Using the first byte of user's public key for pseudo-randomness
-        // Fixed: Pass a reference to user.key() with &
         let fortune_index = generate_deterministic_index(&user.key());
         
         // Store the selected fortune and user's public key in the account
         fortune_data.fortune = fortunes[fortune_index].to_string();
-        // Fixed: user.key() returns a Pubkey, no need to dereference
         fortune_data.user = user.key();
         
         // Log the delivered fortune for debugging (visible in transaction logs)
@@ -150,9 +147,9 @@ pub struct FortuneData {
 /// during program execution, with a descriptive error message.
 #[error_code]
 pub enum ErrorCode {
-    /// Error thrown when user doesn't have enough SOL for the fortune
+    /// Error thrown when user doesn't have enough lamports for the fortune
     /// 
-    /// Current requirement: 2 SOL (2,000,000,000 lamports)
-    #[msg("Insufficient payment. 2 SOL required.")]
+    /// Current requirement: 2 lamports
+    #[msg("Insufficient payment. 2 lamports required.")]
     InsufficientPayment,
 }
