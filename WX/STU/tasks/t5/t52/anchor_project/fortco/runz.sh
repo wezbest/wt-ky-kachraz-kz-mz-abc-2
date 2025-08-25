@@ -179,8 +179,8 @@ seq1() {
 
 
 # ---Execution zone--- 
-# seq1
+seq1
 # bal_check
 # sol_transfer
 # bal_check
-sol_transfer_address 
+# sol_transfer_address 
