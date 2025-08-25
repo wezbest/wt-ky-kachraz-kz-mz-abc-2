@@ -87,7 +87,7 @@ anchor_test1() {
 
 # --- Transferring sol --- 
 sol_transfer() {
-  local FROM_WALLET="../../shit/wallet2.json"
+  local FROM_WALLET="wallets/wallet2.json"
   local TO_WALLET="wallets/wallet3.json"
   
   solana transfer \
@@ -113,4 +113,6 @@ seq1() {
 
 
 # ---Execution zone--- 
-seq1
+# seq1
+sol_transfer 1
+bal_check
