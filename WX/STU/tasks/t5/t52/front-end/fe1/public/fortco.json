@@ -6,9 +6,7 @@
     "spec": "0.1.0",
     "description": "Created with Anchor"
   },
-  "docs": [
-    "Main program module containing all instruction handlers"
-  ],
+  "docs": ["Main program module containing all instruction handlers"],
   "instructions": [
     {
       "name": "get_fortune",
@@ -25,16 +23,7 @@
         "* User has paid 2 lamports (wallet balance check)",
         "* Fortune account is properly initialized"
       ],
-      "discriminator": [
-        39,
-        34,
-        202,
-        168,
-        67,
-        26,
-        146,
-        109
-      ],
+      "discriminator": [39, 34, 202, 168, 67, 26, 146, 109],
       "accounts": [
         {
           "name": "fortune_data",
@@ -53,15 +42,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  102,
-                  111,
-                  114,
-                  116,
-                  117,
-                  110,
-                  101
-                ]
+                "value": [102, 111, 114, 116, 117, 110, 101]
               },
               {
                 "kind": "account",
@@ -83,9 +64,7 @@
         },
         {
           "name": "system_program",
-          "docs": [
-            "System program required for account creation"
-          ],
+          "docs": ["System program required for account creation"],
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -95,16 +74,31 @@
   "accounts": [
     {
       "name": "FortuneData",
-      "discriminator": [
-        223,
-        123,
-        159,
-        2,
-        133,
-        244,
-        47,
-        85
-      ]
+      "discriminator": [223, 123, 159, 2, 133, 244, 47, 85],
+      // --- MODIFIED SECTION STARTS HERE ---
+      // Explicitly define the account structure within the 'accounts' section
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "fortune",
+            "docs": [
+              "The fortune text delivered to the user",
+              "Stored as a String (dynamic length)"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "docs": [
+              "Public key of the user who received this fortune",
+              "Useful for tracking and querying fortunes by user"
+            ],
+            "type": "pubkey"
+          }
+        ]
+      }
+      // --- MODIFIED SECTION ENDS HERE ---
     }
   ],
   "errors": [
