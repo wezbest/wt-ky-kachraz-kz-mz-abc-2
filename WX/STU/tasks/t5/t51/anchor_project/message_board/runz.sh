@@ -41,8 +41,6 @@ clean_1() {
 
 #  Building the program - This will give the new program id which has to be replaced in the Anchor TOml
 
-ACC="WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ"
-
 build_1() {
     hea1 "Anchor test"
     co1="anchor build"
@@ -89,8 +87,8 @@ anchor_test1() {
 
 # --- Transferring sol --- 
 sol_transfer() {
-  local FROM_WALLET="../../shit/wallet1.json"
-  local TO_WALLET="wallets/wallet2.json"
+  local FROM_WALLET="../../shit/wallet2.json"
+  local TO_WALLET="wallets/wallet3.json"
   
   solana transfer \
     --keypair "$FROM_WALLET" \
@@ -107,6 +105,9 @@ seq1() {
     bal_check
     clean_1
     build_1
+    sol_transfer 1
+    bal_check
+    yarn install
     anchor_test1 
 }
 
