@@ -53,13 +53,18 @@ bal_check() {
     hea1 "Solana Balance Check"
     
     # Array of wallet file paths
+    # wallets=(
+    #     "../../shit/wallet1.json"
+    #     "../../shit/wallet2.json"
+    #     "../../shit/wallet3.json"
+    #     "../../shit/wallet4.json"
+    #     "../../shit/wallet5.json"
+    #     "../../shit/wallet6.json"
+    # )
+    
     wallets=(
-        "../../shit/wallets/wallet1.json"
-        "../../shit/wallets/wallet2.json"
-        "../../shit/wallets/wallet3.json"
-        "../../shit/wallets/wallet4.json"
-        "../../shit/wallets/wallet5.json"
-        "../../shit/wallets/wallet6.json"
+        "wallets/w1.json"
+        "wallets/treasory.json"
     )
     
     # Loop through each wallet and check balance
@@ -103,8 +108,8 @@ anchor_test1() {
 
 # --- Transferring sol --- 
 sol_transfer() {
-  local FROM_WALLET="wallets/wallet2.json"
-  local TO_WALLET="wallets/wallet3.json"
+  local FROM_WALLET="../../shit/wallet5.json"
+  local TO_WALLET="wallets/w1.json"
   
   solana transfer \
     --keypair "$FROM_WALLET" \
@@ -127,3 +132,4 @@ seq1() {
 # ---Execution zone--- 
 # seq1
 bal_check
+# sol_transfer 2 
