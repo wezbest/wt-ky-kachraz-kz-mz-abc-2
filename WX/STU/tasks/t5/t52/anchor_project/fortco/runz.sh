@@ -126,8 +126,8 @@ sol_transfer() {
 sol_transfer_address() {
   # Hardcoded values - use keypair file paths
   local FROM_KEYPAIR="wallets/treasury.json"
-  local TO_ADDRESS="63tb8Go8gngmCCFPBznMharUHr1mmE5hCQUh4xb8nrfK"
-  local AMOUNT="2"
+  local TO_ADDRESS="7qdQL8UzEvdDEjiP9bBe6HVGAgPQiShmD69qh3xfBUpS"
+  local AMOUNT="5"
   
   # Validate keypair file exists
   if [[ ! -f "$FROM_KEYPAIR" ]]; then
