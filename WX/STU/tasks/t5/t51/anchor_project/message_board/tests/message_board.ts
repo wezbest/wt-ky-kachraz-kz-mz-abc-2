@@ -1,15 +1,20 @@
 import * as anchor from "@coral-xyz/anchor"
-import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js"
+import { AnchorProvider, Program } from "@coral-xyz/anchor"
+import { Keypair, PublicKey } from "@solana/web3.js"
 import { expect } from "chai"
 
+// Load IDL from disk or build output
+const idl = require("../target/idl/message_board.json")
+
 describe("message_board", () => {
-  const provider = anchor.AnchorProvider.env()
+  // Set up provider from Anchor CLI/env
+  const provider = anchor.getProvider() as AnchorProvider
   anchor.setProvider(provider)
 
-  const program = anchor.workspace.MessageBoard
-  const payer = provider.wallet as anchor.Wallet
+  // Create program client
+  const program = new Program(idl, provider)
 
-  // ✅ Use PDAs, not keypairs
+  // Derive PDAs — no keypairs needed
   const [counter] = PublicKey.findProgramAddressSync(
     [Buffer.from("counter")],
     program.programId
@@ -24,29 +29,29 @@ describe("message_board", () => {
     try {
       console.log("Airdropping 1 SOL to payer...")
       const airdropSig = await provider.connection.requestAirdrop(
-        payer.publicKey,
-        1 * LAMPORTS_PER_SOL
+        provider.wallet.publicKey,
+        2 * anchor.web3.LAMPORTS_PER_SOL
       )
-      await provider.connection.confirmTransaction({
-        signature: airdropSig,
-        ...(await provider.connection.getLatestBlockhash()),
-      })
+      await provider.connection.confirmTransaction(
+        await provider.connection.getLatestBlockhash(),
+        airdropSig
+      )
       console.log("✅ Airdrop confirmed.")
     } catch (err) {
-      console.warn("⚠️ Airdrop failed or not needed. Continuing...")
+      console.warn("⚠️ Airdrop failed. Ensure wallet has SOL on devnet.")
     }
   })
 
-  // ✅ HAPPY PATH 1: Initialize the board
+  // ✅ HAPPY PATH 1: Initialize (idempotent)
   it("Initializes the counter", async () => {
     await program.methods
       .initialize()
       .accounts({
         counter,
-        payer: payer.publicKey,
+        payer: provider.wallet.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
-      .rpc({ skipPreflight: false, preflightCommitment: "confirmed" })
+      .rpc({ skipPreflight: true })
 
     const counterAccount = await program.account.messageCounter.fetch(counter)
     expect(counterAccount.count.toString()).to.eq("0")
@@ -78,14 +83,16 @@ describe("message_board", () => {
         treasury,
         message: messagePda,
         counter,
-        payer: payer.publicKey,
+        payer: provider.wallet.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
-      .rpc({ skipPreflight: false, preflightCommitment: "confirmed" })
+      .rpc({ skipPreflight: true })
 
     const messageAccount = await program.account.message.fetch(messagePda)
     expect(messageAccount.content).to.eq(content)
-    expect(messageAccount.poster.toString()).to.eq(payer.publicKey.toString())
+    expect(messageAccount.poster.toString()).to.eq(
+      provider.wallet.publicKey.toString()
+    )
 
     const treasuryBalanceAfter = await provider.connection.getBalance(treasury)
     expect(treasuryBalanceAfter - treasuryBalanceBefore).to.eq(69)
@@ -116,10 +123,10 @@ describe("message_board", () => {
           treasury,
           message: messagePda,
           counter,
-          payer: payer.publicKey,
+          payer: provider.wallet.publicKey,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
-        .rpc()
+        .rpc({ skipPreflight: true })
       expect.fail("Expected error due to long message")
     } catch (err: any) {
       expect(err.toString()).to.include("ContentTooLong")
@@ -130,7 +137,7 @@ describe("message_board", () => {
   // ❌ UNHAPPY PATH 2: Reject incorrect treasury
   it("Fails if treasury account is incorrect", async () => {
     const content = "gm"
-    const fakeTreasury = PublicKey.unique() // Not the real treasury PDA
+    const fakeTreasury = Keypair.generate().publicKey
 
     const counterAccount = await program.account.messageCounter.fetch(counter)
     const currentCount = counterAccount.count
@@ -151,13 +158,13 @@ describe("message_board", () => {
           treasury: fakeTreasury,
           message: messagePda,
           counter,
-          payer: payer.publicKey,
+          payer: provider.wallet.publicKey,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
-        .rpc()
+        .rpc({ skipPreflight: true })
       expect.fail("Expected error due to wrong treasury")
     } catch (err: any) {
-      // ✅ Anchor throws early: "Account does not match constraint"
+      // Anchor throws early due to account constraint mismatch
       expect(err.toString()).to.include("AnchorError") &&
         expect(err.toString()).to.include("treasury")
       console.log("✅ Correctly blocked wrong treasury")
