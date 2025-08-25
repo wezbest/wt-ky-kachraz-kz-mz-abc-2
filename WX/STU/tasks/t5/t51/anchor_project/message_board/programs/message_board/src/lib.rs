@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::{transfer, Transfer};
 
-declare_id!("HU2U9Xeg3CMxjg4PRxNa3TxtVv39UgUie8ZRLZn94f3Y");
+declare_id!("B1aeQrDpUuLZVeAdq7su68fLaxkbsdC4XpJuguhzyXzN");
 
 #[program]
 pub mod message_board {
