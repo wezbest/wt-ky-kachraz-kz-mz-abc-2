@@ -54,10 +54,12 @@ bal_check() {
     
     # Array of wallet file paths
     wallets=(
-        "wallets/wallet1.json"
-        "wallets/wallet2.json" 
-        "wallets/wallet3.json"
-        "wallets/wallet4.json"
+        "../../shit/wallets/wallet1.json"
+        "../../shit/wallets/wallet2.json"
+        "../../shit/wallets/wallet3.json"
+        "../../shit/wallets/wallet4.json"
+        "../../shit/wallets/wallet5.json"
+        "../../shit/wallets/wallet6.json"
     )
     
     # Loop through each wallet and check balance
@@ -123,4 +125,5 @@ seq1() {
 
 
 # ---Execution zone--- 
-seq1
+# seq1
+bal_check
