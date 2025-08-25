@@ -53,7 +53,7 @@ build_1() {
 # Checking balance
 bal_check() {
     hea1 "Solana Balance Check"
-    co1="solana balance -k wallets/wallet2.json --url https://api.devnet.solana.com"
+    co1="solana balance -k wallets/wallet3.json --url https://api.devnet.solana.com"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
 }
@@ -102,13 +102,14 @@ sol_transfer() {
     --allow-unfunded-recipient
 }
 
+# --- Sequencer --- 
+seq1() {
+    bal_check
+    clean_1
+    build_1
+    anchor_test1 
+}
 
 
 # ---Execution zone--- 
-# sol_transfer 1
-# clean_1
-# get_id
-# build_1
-bal_check
-anchor_test1
-bal_check
+seq1
