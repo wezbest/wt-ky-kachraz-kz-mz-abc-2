@@ -122,9 +122,18 @@ sol_transfer() {
     --allow-unfunded-recipient
 }
 
+# Get the keypair 
+get_id() {
+    hea1 "Solana Get ID"
+    co1="solana-keygen pubkey target/deploy/fortco-keypair.json"
+    echo -e "${GREEN}$co1$NC"
+    eval "$co1"
+}
+
 # --- Sequencer --- 
 seq1() {
     bal_check
+    get_id
     clean_1
     build_1
     dep_1
