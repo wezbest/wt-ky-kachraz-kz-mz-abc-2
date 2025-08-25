@@ -1,14 +1,32 @@
-[workspace]
-members = [
-    "programs/*"
-]
-resolver = "2"
+[package]
+name = "message_board"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
 
-[profile.release]
-overflow-checks = true
-lto = "fat"
-codegen-units = 1
-[profile.release.build-override]
-opt-level = 3
-incremental = false
-codegen-units = 1
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "message_board"
+
+# =============================================
+#  DEPENDENCIES
+# =============================================
+[dependencies]
+anchor-lang = { version = "0.31.1", features = [
+  "init-if-needed",    # Required for #[account(init_if_needed)]
+  "default"            # Required for bump + Accounts macro
+] }
+
+[features]
+idl-build = ["anchor-lang/idl-build"]
+
+# Optional: disable default entrypoint if needed
+# no-entrypoint = []
+# no-idl = []
+# custom-panic = []
+# custom-heap = []
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+    'cfg(feature, values("cpi", "default", "idl-build", "no-entrypoint", "no-idl", "no-log-ix-name", "custom-heap", "custom-panic", "anchor-debug"))'
+] }
