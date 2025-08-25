@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-fortco = "ETnL1ThTjZje1qs2mQEPzworCzbGq6oVk6Neu7pKQssh"
+fortco = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
 
 [registry]
 url = "https://api.apr.dev"
