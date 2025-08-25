@@ -1,5 +1,0 @@
-wallet2.json 
-2EiCfQUY7WonHyiiBw6vw6Maw1uhsLhdD2RV2KsqWtda
-
-wallet3.json
-AdtqDfroRfXroPxz72bfxG5b22DgVxNVC2g69ZnQdEVb

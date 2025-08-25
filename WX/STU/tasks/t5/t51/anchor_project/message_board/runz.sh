@@ -103,16 +103,10 @@ sol_transfer() {
 # --- Sequencer --- 
 seq1() {
     bal_check
-    clean_1
-    build_1
-    sol_transfer 1
-    bal_check
-    yarn install
     anchor_test1 
+    bal_check
 }
 
 
 # ---Execution zone--- 
-# seq1
-sol_transfer 1
-bal_check
+seq1
