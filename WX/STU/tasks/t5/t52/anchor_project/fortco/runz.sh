@@ -122,6 +122,46 @@ sol_transfer() {
     --allow-unfunded-recipient
 }
 
+# Transfers with addresses 
+sol_transfer_address() {
+  # Hardcoded addresses and amount
+  local FROM_ADDRESS="7qdQL8UzEvdDEjiP9bBe6HVGAgPQiShmD69qh3xfBUpS"
+  local TO_ADDRESS="63tb8Go8gngmCCFPBznMharUHr1mmE5hCQUh4xb8nrfK"
+  local AMOUNT="2"
+  local FEE_PAYER="$FROM_ADDRESS"  # Default fee payer is sender
+  
+  # Validate Solana address format (basic check)
+  if [[ ! "$FROM_ADDRESS" =~ ^[1-9A-HJ-NP-Za-km-z]{32,44}$ ]]; then
+    echo "Error: Invalid FROM address format: $FROM_ADDRESS"
+    return 1
+  fi
+  
+  if [[ ! "$TO_ADDRESS" =~ ^[1-9A-HJ-NP-Za-km-z]{32,44}$ ]]; then
+    echo "Error: Invalid TO address format: $TO_ADDRESS"
+    return 1
+  fi
+  
+  echo "🔄 Transferring $AMOUNT SOL from $FROM_ADDRESS to $TO_ADDRESS"
+  echo "💰 Fee payer: $FEE_PAYER"
+  
+  # Execute the transfer
+  solana transfer \
+    --from "$FROM_ADDRESS" \
+    --url https://api.devnet.solana.com \
+    --fee-payer "$FEE_PAYER" \
+    "$TO_ADDRESS" \
+    "$AMOUNT" \
+    --allow-unfunded-recipient
+  
+  # Check if the transfer was successful
+  if [ $? -eq 0 ]; then
+    echo "✅ Transfer completed successfully!"
+  else
+    echo "❌ Transfer failed"
+    return 1
+  fi
+}
+
 # Get the keypair 
 get_id() {
     hea1 "Solana Get ID"
@@ -143,7 +183,8 @@ seq1() {
 
 
 # ---Execution zone--- 
-seq1
+# seq1
 # bal_check
 # sol_transfer
 # bal_check
+sol_transfer_address 

@@ -1,0 +1,3 @@
+🔄 Transferring 2 SOL from 7qdQL8UzEvdDEjiP9bBe6HVGAgPQiShmD69qh3xfBUpS to 63tb8Go8gngmCCFPBznMharUHr1mmE5hCQUh4xb8nrfK
+💰 Fee payer: 7qdQL8UzEvdDEjiP9bBe6HVGAgPQiShmD69qh3xfBUpS
+❌ Transfer failed
