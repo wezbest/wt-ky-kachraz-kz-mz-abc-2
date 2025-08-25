@@ -1,16 +1,17 @@
-// tests/fortune-cookie.ts
+// tests/fortco.ts
 import * as anchor from "@coral-xyz/anchor"
 import { Program } from "@coral-xyz/anchor"
 import { Keypair, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js"
-import { FortuneCookie } from "../target/types/fortune_cookie"
+import { Fortco } from "../target/types/fortco" // Changed import
 
-describe("fortune-cookie", () => {
+describe("fortco", () => {
+  // Changed describe block name
   // Configure the client to use the local cluster
   const provider = anchor.AnchorProvider.env()
   anchor.setProvider(provider)
 
   // Get the program IDL and program instance
-  const program = anchor.workspace.FortuneCookie as Program<FortuneCookie>
+  const program = anchor.workspace.Fortco as Program<Fortco> // Changed workspace access
 
   // Helper function to generate deterministic fortune index
   // Matches the logic in the program: first byte of pubkey % 8
