@@ -3,7 +3,7 @@
 
 # === Config ===
 WALLET_DIR="wallets"   # <-- all wallets stored here
-WALLETS=("wallet2.json")  # <-- list of wallets you want to manage
+WALLETS=("wallet3.json")  # <-- list of wallets you want to manage
 
 # Colors
 RED='\033[0;31m'
@@ -74,7 +74,7 @@ airdrop_wallets() {
 # Getting the pub key of wallet 
 
 # === Main ===
-# create_wallets
+create_wallets
 airdrop_wallets
 check_balances
 hea1 "Done ✅"
