@@ -1,0 +1,59 @@
+Deploying cluster: https://api.devnet.solana.com
+Upgrade authority: wallets/w1.json
+Deploying program "message_board"...
+Program path: /panty/tasks/t5/t51/anchor_project/message_board/target/deploy/message_board.so...
+Program Id: HU2U9Xeg3CMxjg4PRxNa3TxtVv39UgUie8ZRLZn94f3Y
+
+Signature: sR4yP6ZsgnDXYKkh7BMkTs4JTQDEQS52fTXufocyvtJPk1jQSsvvSyxErhe8QNp2NGW25co356y4cFzeKTfx5Q6
+
+Deploy success
+
+Found a 'test' script in the Anchor.toml. Running it as a test suite!
+
+Running test suite: "/panty/tasks/t5/t51/anchor_project/message_board/Anchor.toml"
+
+yarn run v1.22.22
+$ /panty/tasks/t5/t51/anchor_project/message_board/node_modules/.bin/ts-mocha -p ./tsconfig.json -t 1000000 'tests/**/*.ts'
+
+
+  message_board
+Airdropping 1 SOL to payer...
+    1) Initializes the counter
+    2) Posts a message for 69 lamports
+    3) Fails to post message longer than 100 characters
+    4) Fails if treasury account is incorrect
+
+
+  0 passing (12s)
+  4 failing
+
+  1) message_board
+       Initializes the counter:
+     Error: Signature verification failed.
+Missing signature for public key [`EbPY5EQxPire6M4joWr3NkofhujkEhegUveyJrkKPMNN`].
+      at Transaction.serialize (node_modules/@solana/web3.js/src/transaction/legacy.ts:828:15)
+      at AnchorProvider.sendAndConfirm (node_modules/@coral-xyz/anchor/src/provider.ts:164:22)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at MethodsBuilder.rpc [as _rpcFn] (node_modules/@coral-xyz/anchor/src/program/namespace/rpc.ts:29:16)
+
+  2) message_board
+       Posts a message for 69 lamports:
+     Error: Account does not exist or has no data EbPY5EQxPire6M4joWr3NkofhujkEhegUveyJrkKPMNN
+      at AccountClient.fetch (node_modules/@coral-xyz/anchor/src/program/namespace/account.ts:168:13)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+  3) message_board
+       Fails to post message longer than 100 characters:
+     Error: Account does not exist or has no data EbPY5EQxPire6M4joWr3NkofhujkEhegUveyJrkKPMNN
+      at AccountClient.fetch (node_modules/@coral-xyz/anchor/src/program/namespace/account.ts:168:13)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+  4) message_board
+       Fails if treasury account is incorrect:
+     Error: Account does not exist or has no data EbPY5EQxPire6M4joWr3NkofhujkEhegUveyJrkKPMNN
+      at AccountClient.fetch (node_modules/@coral-xyz/anchor/src/program/namespace/account.ts:168:13)
+      at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
