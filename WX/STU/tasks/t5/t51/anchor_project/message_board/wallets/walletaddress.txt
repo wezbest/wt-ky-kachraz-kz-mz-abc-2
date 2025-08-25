@@ -1,7 +1,0 @@
-This is the wallet addressses 
-
-wallet2.json
-WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ
-
-wallet4.json
-8piYs5ryxmS7v5wi9Mg3pvdeFrXKyAc99n4hVgBQPnHN
