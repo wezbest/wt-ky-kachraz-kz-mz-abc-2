@@ -53,7 +53,7 @@ build_1() {
 # Checking balance
 bal_check() {
     hea1 "Solana Balance Check"
-    co1="solana balance -k ../../shit/wallet1.json --url https://api.devnet.solana.com"
+    co1="solana balance -k wallets/wallet2.json --url https://api.devnet.solana.com"
     echo -e "${GREEN}$co1$NC"
     eval "$co1"
 }
@@ -78,11 +78,19 @@ get_id() {
     eval "$co1"
 }
 
+# --- Anchor Test ---
+anchor_test1() {
+    hea1 "Anchor Test"
+    co1="anchor test"
+    echo -e "${GREEN}$co1$NC"
+    eval "$co1"
+}
+
 
 # --- Transferring sol --- 
 sol_transfer() {
-  local FROM_WALLET="wallets/wallet2.json"
-  local TO_WALLET="wallets/wallet5.json"
+  local FROM_WALLET="../../shit/wallet1.json"
+  local TO_WALLET="wallets/wallet2.json"
   
   solana transfer \
     --keypair "$FROM_WALLET" \
@@ -97,8 +105,10 @@ sol_transfer() {
 
 
 # ---Execution zone--- 
-bal_check
-# sol_transfer 
+# sol_transfer 1
 # clean_1
 # get_id
 # build_1
+bal_check
+anchor_test1
+bal_check
