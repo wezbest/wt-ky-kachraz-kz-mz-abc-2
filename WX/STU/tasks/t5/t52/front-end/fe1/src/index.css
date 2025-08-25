@@ -5,7 +5,8 @@
 body {
   margin: 0;
   font-family: "Courier New", monospace;
-  background-color: theme("colors.synthwave-darker");
+  /* Replaced theme("colors.synthwave-darker") */
+  background-color: #0d0d1a;
   color: white;
   min-height: 100vh;
   background-image: linear-gradient(rgba(42, 42, 74, 0.2) 1px, transparent 1px),
@@ -15,21 +16,27 @@ body {
 
 /* Custom styles for wallet button */
 .wallet-adapter-button {
-  background: theme("colors.synthwave-purple") !important;
+  /* Replaced theme("colors.synthwave-purple") */
+  background: #bf24f4 !important;
   border-radius: 8px !important;
   color: white !important;
 }
 
 .wallet-adapter-button:hover {
-  background: theme("colors.synthwave-pink") !important;
-  box-shadow: theme("boxShadow.synth") !important;
+  /* Replaced theme("colors.synthwave-pink") */
+  background: #ff2aca !important;
+  /* Replaced theme("boxShadow.synth") - hardcoding the values from tailwind.config.js */
+  box-shadow: 0 0 10px #bf24f4, 0 0 20px #ff2aca !important;
 }
 
 /* Custom styles for modal */
 .wallet-adapter-modal {
-  background-color: theme("colors.synthwave-dark") !important;
-  border: 1px solid theme("colors.synthwave-purple") !important;
-  box-shadow: theme("boxShadow.synth") !important;
+  /* Replaced theme("colors.synthwave-dark") */
+  background-color: #1a1a2e !important;
+  /* Replaced theme("colors.synthwave-purple") */
+  border: 1px solid #bf24f4 !important;
+  /* Replaced theme("boxShadow.synth") */
+  box-shadow: 0 0 10px #bf24f4, 0 0 20px #ff2aca !important;
 }
 
 .wallet-adapter-modal-title {
@@ -37,17 +44,21 @@ body {
 }
 
 .wallet-adapter-modal-list .wallet-adapter-button {
-  background-color: theme("colors.synthwave-grid") !important;
-  border: 1px solid theme("colors.synthwave-blue") !important;
+  /* Replaced theme("colors.synthwave-grid") */
+  background-color: #2a2a4a !important;
+  /* Replaced theme("colors.synthwave-blue") */
+  border: 1px solid #0ff0fc !important;
 }
 
 .wallet-adapter-modal-list .wallet-adapter-button:hover {
-  background-color: theme("colors.synthwave-purple") !important;
+  /* Replaced theme("colors.synthwave-purple") */
+  background-color: #bf24f4 !important;
 }
 
 /* Loader animation */
 .loader {
-  border-top-color: theme("colors.synthwave-blue");
+  /* Replaced theme("colors.synthwave-blue") */
+  border-top-color: #0ff0fc;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
 }
