@@ -12,7 +12,7 @@ fortco = "CVBns8Rp7ivo1tisKru8GDwhwu36DnxbM4YtkDiZReKu"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "wallets/w1.json"
 
 [scripts]
