@@ -65,7 +65,7 @@ airdrop_wallets() {
         fi
         pubkey=$(solana-keygen pubkey "$wallet_file")
         echo -e "${GREEN}Requesting 2 SOL airdrop for $w:${NC} ${WHITE}$pubkey${NC}"
-        solana airdrop 2 "$pubkey" --url https://api.devnet.solana.com > /dev/null 2>&1
+        solana airdrop 5 "$pubkey" --url https://api.devnet.solana.com > /dev/null 2>&1
         balance=$(solana balance -k "$wallet_file" --url https://api.devnet.solana.com 2>/dev/null)
         echo -e "   ${GREEN}New Balance:${NC} ${YELLOW}$balance${NC}"
     done
