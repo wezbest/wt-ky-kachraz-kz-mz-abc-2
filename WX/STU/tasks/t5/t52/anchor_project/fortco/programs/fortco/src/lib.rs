@@ -1,6 +1,6 @@
 //! Fortune Cookie Solana Program
 //! 
-//! This program allows users to pay 2 SOL to receive a randomly generated humorous fortune.
+//! This program allows users to pay 2 SOL to receive a deterministically generated humorous fortune.
 //! Designed for Devnet use only.
 
 use anchor_lang::prelude::*;
@@ -54,9 +54,8 @@ pub mod fortune_cookie {
             "The only constant in your life will be changing requirements."
         ];
         
-        // Generate deterministic "random" index using Solana-compatible approach
-        // Using the first byte of user's public key combined with current slot hash
-        // for pseudo-randomness that works in Solana's deterministic environment
+        // Generate deterministic index using Solana-compatible approach
+        // Using the first byte of user's public key for pseudo-randomness
         let fortune_index = Self::generate_deterministic_index(user.key());
         
         // Store the selected fortune and user's public key in the account
@@ -83,8 +82,7 @@ impl fortune_cookie {
     /// 
     /// # Note
     /// This uses a simple deterministic approach since true randomness
-    /// is challenging in Solana's deterministic environment. For production,
-    /// consider using Oracle services like Switchboard VRF.
+    /// is challenging in Solana's deterministic environment.
     fn generate_deterministic_index(user_key: &Pubkey) -> usize {
         // Convert user's public key to bytes
         let user_bytes = user_key.to_bytes();
@@ -158,10 +156,4 @@ pub enum ErrorCode {
     /// Current requirement: 2 SOL (2,000,000,000 lamports)
     #[msg("Insufficient payment. 2 SOL required.")]
     InsufficientPayment,
-    
-    // Note: Additional error codes can be added here as needed:
-    // #[msg("Fortune already claimed")]
-    // AlreadyClaimed,
-    // #[msg("Invalid fortune parameters")]
-    // InvalidParameters,
 }
