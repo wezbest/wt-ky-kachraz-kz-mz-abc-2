@@ -6,7 +6,7 @@ import { useState } from "react"
 
 // --- Configuration ---
 // Program ID from your successful deployment
-const PROGRAM_ID_STR = "ETnL1ThTjZje1qs2mQEPzworCzbGq6oVk6Neu7pKQssh"
+const PROGRAM_ID_STR = "28fEBCBgk29YmK8dZWmbFyMawxFDVE8Hc6wyGHf8jHz4"
 let programID = null
 try {
   programID = new PublicKey(PROGRAM_ID_STR)
