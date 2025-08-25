@@ -1,34 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
+import { FortuneCookie } from "./components/FortuneCookie" // Ensure .jsx extension if needed
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
+  // Removed type annotation
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      <header className="w-full max-w-4xl flex justify-end mb-8">
+        <WalletMultiButton />
+      </header>
+      <main className="flex-grow flex flex-col items-center justify-center w-full">
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-synthwave-purple to-synthwave-pink">
+          Synthwave Fortune Cookie
+        </h1>
+        <p className="text-synthwave-blue mb-8">
+          Pay 2 lamports, get a hilarious fortune!
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+        <FortuneCookie />
+      </main>
+      <footer className="mt-8 text-synthwave-grid text-sm">
+        Powered by Solana & Anchor
+      </footer>
+    </div>
   )
 }
 
