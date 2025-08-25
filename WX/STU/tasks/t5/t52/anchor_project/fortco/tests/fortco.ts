@@ -36,11 +36,13 @@ describe("fortco", () => {
     // Create a new user for this test to ensure deterministic results
     const user = Keypair.generate()
 
-    // Transfer exactly 2 lamports to the user from the provider wallet
+    // Transfer enough lamports to make the account rent-exempt
+    const rentExemptAmount =
+      await provider.connection.getMinimumBalanceForRentExemption(0)
     const transferIx = anchor.web3.SystemProgram.transfer({
       fromPubkey: provider.wallet.publicKey,
       toPubkey: user.publicKey,
-      lamports: 2, // Only 2 lamports required
+      lamports: rentExemptAmount + 2, // Rent exempt + 2 lamports for the program
     })
 
     const transferTx = new Transaction().add(transferIx)
@@ -86,11 +88,13 @@ describe("fortco", () => {
     // Create a new user for this test
     const user = Keypair.generate()
 
-    // Transfer 1000 lamports to the user (more than required)
+    // Transfer enough lamports to make the account rent-exempt
+    const rentExemptAmount =
+      await provider.connection.getMinimumBalanceForRentExemption(0)
     const transferIx = anchor.web3.SystemProgram.transfer({
       fromPubkey: provider.wallet.publicKey,
       toPubkey: user.publicKey,
-      lamports: 1000, // More than required 2 lamports
+      lamports: rentExemptAmount + 1000, // Rent exempt + 1000 lamports
     })
 
     const transferTx = new Transaction().add(transferIx)
@@ -136,11 +140,13 @@ describe("fortco", () => {
     // Create a new user for this test
     const user = Keypair.generate()
 
-    // Transfer only 1 lamport to the user (less than required 2 lamports)
+    // Transfer enough lamports to make the account rent-exempt but only 1 lamport for the program
+    const rentExemptAmount =
+      await provider.connection.getMinimumBalanceForRentExemption(0)
     const transferIx = anchor.web3.SystemProgram.transfer({
       fromPubkey: provider.wallet.publicKey,
       toPubkey: user.publicKey,
-      lamports: 1, // Less than required 2 lamports
+      lamports: rentExemptAmount + 1, // Rent exempt + 1 lamport (less than required 2)
     })
 
     const transferTx = new Transaction().add(transferIx)
@@ -178,11 +184,13 @@ describe("fortco", () => {
     // Create a new user for this test
     const user = Keypair.generate()
 
-    // Transfer 1000 lamports to the user (more than enough)
+    // Transfer enough lamports to make the account rent-exempt
+    const rentExemptAmount =
+      await provider.connection.getMinimumBalanceForRentExemption(0)
     const transferIx = anchor.web3.SystemProgram.transfer({
       fromPubkey: provider.wallet.publicKey,
       toPubkey: user.publicKey,
-      lamports: 1000, // More than required 2 lamports
+      lamports: rentExemptAmount + 1000, // Rent exempt + 1000 lamports
     })
 
     const transferTx = new Transaction().add(transferIx)
