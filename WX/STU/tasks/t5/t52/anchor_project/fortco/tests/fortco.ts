@@ -1,17 +1,16 @@
 // tests/fortco.ts
 import * as anchor from "@coral-xyz/anchor"
 import { Program } from "@coral-xyz/anchor"
-import { Keypair, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js"
-import { Fortco } from "../target/types/fortco" // Changed import
+import { Keypair, PublicKey } from "@solana/web3.js"
+import { Fortco } from "../target/types/fortco"
 
 describe("fortco", () => {
-  // Changed describe block name
   // Configure the client to use the local cluster
   const provider = anchor.AnchorProvider.env()
   anchor.setProvider(provider)
 
   // Get the program IDL and program instance
-  const program = anchor.workspace.Fortco as Program<Fortco> // Changed workspace access
+  const program = anchor.workspace.Fortco as Program<Fortco>
 
   // Helper function to generate deterministic fortune index
   // Matches the logic in the program: first byte of pubkey % 8
@@ -32,27 +31,27 @@ describe("fortco", () => {
     "The only constant in your life will be changing requirements.",
   ]
 
-  // Happy Path Test 1: User with exactly 2 SOL can get a fortune
-  it("Happy Path: User gets a fortune with exactly 2 SOL payment", async () => {
+  // Happy Path Test 1: User can get a fortune with exactly 2 lamports
+  it("Happy Path: User gets a fortune with exactly 2 lamports payment", async () => {
     // Create a new user for this test to ensure deterministic results
     const user = Keypair.generate()
 
-    // Airdrop exactly 2 SOL to the user
-    const airdropSignature = await provider.connection.requestAirdrop(
-      user.publicKey,
-      2 * LAMPORTS_PER_SOL
+    // Transfer exactly 2 lamports to the user from the provider wallet
+    const transferTx = await provider.sendAndConfirm(
+      anchor.web3.SystemProgram.transfer({
+        fromPubkey: provider.wallet.publicKey,
+        toPubkey: user.publicKey,
+        lamports: 2, // Only 2 lamports required
+      })
     )
-    await provider.connection.confirmTransaction(airdropSignature)
 
     // Derive the PDA for the fortune account using the user's public key
-    // This matches the seeds in the program: [b"fortune", user.key().as_ref()]
-    const [fortunePda, bump] = PublicKey.findProgramAddressSync(
+    const [fortunePda] = PublicKey.findProgramAddressSync(
       [Buffer.from("fortune"), user.publicKey.toBuffer()],
       program.programId
     )
 
     // Execute the get_fortune instruction
-    // The user must sign since they're a Signer in the accounts struct
     const tx = await program.methods
       .getFortune()
       .accounts({
@@ -81,20 +80,22 @@ describe("fortco", () => {
     expect(fortuneAccount.user.toBase58()).to.equal(user.publicKey.toBase58())
   })
 
-  // Happy Path Test 2: User with more than 2 SOL can get a fortune
-  it("Happy Path: User gets a fortune with more than 2 SOL payment", async () => {
+  // Happy Path Test 2: User can get a fortune with more than 2 lamports
+  it("Happy Path: User gets a fortune with more than 2 lamports payment", async () => {
     // Create a new user for this test
     const user = Keypair.generate()
 
-    // Airdrop 10 SOL to the user (more than required)
-    const airdropSignature = await provider.connection.requestAirdrop(
-      user.publicKey,
-      10 * LAMPORTS_PER_SOL
+    // Transfer 1000 lamports to the user (more than required)
+    const transferTx = await provider.sendAndConfirm(
+      anchor.web3.SystemProgram.transfer({
+        fromPubkey: provider.wallet.publicKey,
+        toPubkey: user.publicKey,
+        lamports: 1000, // More than required 2 lamports
+      })
     )
-    await provider.connection.confirmTransaction(airdropSignature)
 
     // Derive the PDA for the fortune account
-    const [fortunePda, bump] = PublicKey.findProgramAddressSync(
+    const [fortunePda] = PublicKey.findProgramAddressSync(
       [Buffer.from("fortune"), user.publicKey.toBuffer()],
       program.programId
     )
@@ -133,15 +134,17 @@ describe("fortco", () => {
     // Create a new user for this test
     const user = Keypair.generate()
 
-    // Airdrop only 1 SOL to the user (less than required 2 SOL)
-    const airdropSignature = await provider.connection.requestAirdrop(
-      user.publicKey,
-      1 * LAMPORTS_PER_SOL
+    // Transfer only 1 lamport to the user (less than required 2 lamports)
+    const transferTx = await provider.sendAndConfirm(
+      anchor.web3.SystemProgram.transfer({
+        fromPubkey: provider.wallet.publicKey,
+        toPubkey: user.publicKey,
+        lamports: 1, // Less than required 2 lamports
+      })
     )
-    await provider.connection.confirmTransaction(airdropSignature)
 
     // Derive the PDA for the fortune account
-    const [fortunePda, bump] = PublicKey.findProgramAddressSync(
+    const [fortunePda] = PublicKey.findProgramAddressSync(
       [Buffer.from("fortune"), user.publicKey.toBuffer()],
       program.programId
     )
@@ -172,15 +175,17 @@ describe("fortco", () => {
     // Create a new user for this test
     const user = Keypair.generate()
 
-    // Airdrop 5 SOL to the user (more than enough)
-    const airdropSignature = await provider.connection.requestAirdrop(
-      user.publicKey,
-      5 * LAMPORTS_PER_SOL
+    // Transfer 1000 lamports to the user (more than enough)
+    const transferTx = await provider.sendAndConfirm(
+      anchor.web3.SystemProgram.transfer({
+        fromPubkey: provider.wallet.publicKey,
+        toPubkey: user.publicKey,
+        lamports: 1000, // More than required 2 lamports
+      })
     )
-    await provider.connection.confirmTransaction(airdropSignature)
 
     // Derive the PDA for the fortune account
-    const [fortunePda, bump] = PublicKey.findProgramAddressSync(
+    const [fortunePda] = PublicKey.findProgramAddressSync(
       [Buffer.from("fortune"), user.publicKey.toBuffer()],
       program.programId
     )
