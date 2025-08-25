@@ -6,8 +6,8 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::entrypoint::ProgramResult;
 
-// Program ID will be replaced with actual ID during build
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"); // Replace with your actual program ID
+// Program ID - Replace with your actual program ID after deployment
+declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
 /// Main program module containing all instruction handlers
 #[program]
@@ -56,11 +56,12 @@ pub mod fortco {
         
         // Generate deterministic index using Solana-compatible approach
         // Using the first byte of user's public key for pseudo-randomness
-        let fortune_index = generate_deterministic_index(user.key());
+        // Fixed: Pass a reference to user.key() with &
+        let fortune_index = generate_deterministic_index(&user.key());
         
         // Store the selected fortune and user's public key in the account
         fortune_data.fortune = fortunes[fortune_index].to_string();
-        fortune_data.user = user.key();
+        fortune_data.user = *user.key();
         
         // Log the delivered fortune for debugging (visible in transaction logs)
         msg!("Fortune delivered: {}", fortune_data.fortune);
