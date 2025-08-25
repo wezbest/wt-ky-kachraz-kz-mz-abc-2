@@ -74,7 +74,7 @@ airdrop_wallets() {
 # Getting the pub key of wallet 
 
 # === Main ===
-# create_wallets
+create_wallets
 airdrop_wallets
 check_balances
 hea1 "Done ✅"
