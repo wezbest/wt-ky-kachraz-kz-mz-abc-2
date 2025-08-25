@@ -1,0 +1,29 @@
+Transferring 8741762 lamports to user (0.008741762 SOL)
+Fortune received: A segfault in your past will become a feature in your future.
+    ✔ Happy Path: User gets a fortune with sufficient lamports (3407ms)
+Transferring 1000000000 lamports (1 SOL) to user for test
+Fortune received: A segfault in your past will become a feature in your future.
+    ✔ Happy Path: User gets a fortune with more than required lamports (2071ms)
+Transferring 891880 lamports to user (insufficient for PDA creation)
+Caught expected error during PDA creation (likely insufficient rent exemption): Simulation failed. 
+Message: Transaction simulation failed: Error processing Instruction 0: custom program error: 0x1. 
+Logs: 
+[
+  "Program ETnL1ThTjZje1qs2mQEPzworCzbGq6oVk6Neu7pKQssh invoke [1]",
+  "Program log: Instruction: GetFortune",
+  "Program 11111111111111111111111111111111 invoke [2]",
+  "Transfer: insufficient lamports 891880, need 7850880",
+  "Program 11111111111111111111111111111111 failed: custom program error: 0x1",
+  "Program ETnL1ThTjZje1qs2mQEPzworCzbGq6oVk6Neu7pKQssh consumed 5828 of 200000 compute units",
+  "Program ETnL1ThTjZje1qs2mQEPzworCzbGq6oVk6Neu7pKQssh failed: custom program error: 0x1"
+]. 
+Catch the `SendTransactionError` and call `getLogs()` on it for full details.
+    ✔ Unhappy Path: User fails to get fortune with insufficient payment for PDA (1250ms)
+Correctly rejected transaction without proper signature
+    ✔ Unhappy Path: Transaction fails when user doesn't sign (1887ms)
+
+
+  4 passing (9s)
+
+Done in 10.23s.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
