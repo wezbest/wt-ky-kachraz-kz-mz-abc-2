@@ -1,17 +1,17 @@
 import * as anchor from "@coral-xyz/anchor"
 import { AnchorProvider, Program } from "@coral-xyz/anchor"
-import { Keypair, PublicKey } from "@solana/web3.js"
+import { PublicKey } from "@solana/web3.js"
 import { expect } from "chai"
 
-// Load IDL from disk or build output
+// Load IDL from disk
 const idl = require("../target/idl/message_board.json")
 
 describe("message_board", () => {
-  // Set up provider from Anchor CLI/env
+  // Use provider from Anchor.toml (wallets/w1.json)
   const provider = anchor.getProvider() as AnchorProvider
   anchor.setProvider(provider)
 
-  // Create program client
+  // Initialize program client
   const program = new Program(idl, provider)
 
   // Derive PDAs — no keypairs needed
@@ -27,7 +27,7 @@ describe("message_board", () => {
 
   before(async () => {
     try {
-      console.log("Airdropping 1 SOL to payer...")
+      console.log("Airdropping 2 SOL to payer...")
       const airdropSig = await provider.connection.requestAirdrop(
         provider.wallet.publicKey,
         2 * anchor.web3.LAMPORTS_PER_SOL
@@ -137,7 +137,7 @@ describe("message_board", () => {
   // ❌ UNHAPPY PATH 2: Reject incorrect treasury
   it("Fails if treasury account is incorrect", async () => {
     const content = "gm"
-    const fakeTreasury = Keypair.generate().publicKey
+    const fakeTreasury = PublicKey.unique() // Not the real PDA
 
     const counterAccount = await program.account.messageCounter.fetch(counter)
     const currentCount = counterAccount.count
