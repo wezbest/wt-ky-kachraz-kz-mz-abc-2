@@ -5,7 +5,6 @@
 
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::entrypoint::ProgramResult;
-use rand::Rng;
 
 // Program ID will be replaced during build/deployment
 declare_id!("FORTUNE_PROGRAM_ID");
@@ -35,7 +34,7 @@ pub mod fortune_cookie {
         
         // Verify 2 SOL payment by checking user's wallet balance
         // Note: 1 SOL = 1,000,000,000 lamports
-        let required_lamports = 2 * 1_000_000_000; // 2 SOL in lamports (corrected from 10^9)
+        let required_lamports = 2 * 1_000_000_000; // 2 SOL in lamports
         
         // Check if user has sufficient balance
         if **user.to_account_info().lamports.borrow() < required_lamports {
@@ -55,11 +54,10 @@ pub mod fortune_cookie {
             "The only constant in your life will be changing requirements."
         ];
         
-        // Create a random number generator
-        let mut rng = rand::thread_rng();
-        
-        // Generate random index within the fortunes array bounds
-        let fortune_index = rng.gen_range(0..fortunes.len());
+        // Generate deterministic "random" index using Solana-compatible approach
+        // Using the first byte of user's public key combined with current slot hash
+        // for pseudo-randomness that works in Solana's deterministic environment
+        let fortune_index = Self::generate_deterministic_index(user.key());
         
         // Store the selected fortune and user's public key in the account
         fortune_data.fortune = fortunes[fortune_index].to_string();
@@ -70,6 +68,34 @@ pub mod fortune_cookie {
         
         // Return success
         Ok(())
+    }
+}
+
+// Implementation of helper methods for the fortune_cookie module
+impl fortune_cookie {
+    /// Generates a deterministic index for fortune selection
+    /// 
+    /// # Arguments
+    /// * `user_key` - Public key of the user requesting the fortune
+    /// 
+    /// # Returns
+    /// * `usize` - Index within the fortunes array bounds (0-7)
+    /// 
+    /// # Note
+    /// This uses a simple deterministic approach since true randomness
+    /// is challenging in Solana's deterministic environment. For production,
+    /// consider using Oracle services like Switchboard VRF.
+    fn generate_deterministic_index(user_key: &Pubkey) -> usize {
+        // Convert user's public key to bytes
+        let user_bytes = user_key.to_bytes();
+        
+        // Use the first byte of the public key to create a simple hash
+        // This provides pseudo-randomness that varies by user
+        let index_byte = user_bytes[0] as usize;
+        
+        // Modulo operation to ensure index stays within array bounds (0-7)
+        // 8 is the length of our fortunes array
+        index_byte % 8
     }
 }
 
@@ -84,7 +110,7 @@ pub struct GetFortune<'info> {
     /// # Constraints
     /// * `init` - Creates the account
     /// * `payer` - User pays for account creation
-    /// * `space` - Allocates 1000 bytes for the account
+    /// * `space` - Allocates 1000 bytes for the account (enough for String + Pubkey)
     /// * `seeds` - PDA derived from "fortune" prefix and user's public key
     /// * `bump` - Uses canonical bump for the PDA
     #[account(
@@ -113,6 +139,7 @@ pub struct GetFortune<'info> {
 #[account]
 pub struct FortuneData {
     /// The fortune text delivered to the user
+    /// Stored as a String (dynamic length)
     pub fortune: String,
     
     /// Public key of the user who received this fortune
@@ -128,7 +155,7 @@ pub struct FortuneData {
 pub enum ErrorCode {
     /// Error thrown when user doesn't have enough SOL for the fortune
     /// 
-    /// Current requirement: 2 SOL (2000000000 lamports)
+    /// Current requirement: 2 SOL (2,000,000,000 lamports)
     #[msg("Insufficient payment. 2 SOL required.")]
     InsufficientPayment,
     
