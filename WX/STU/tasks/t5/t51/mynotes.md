@@ -9,7 +9,6 @@ Anonymous Post board
 
 # Wallet Info
 
-|     Wallet      |                      key                       |
-| :-------------: | :--------------------------------------------: |
-|    `wallet1`    | `F9MkQktifqRcb9cF6S6e3nVTHBHXfdGvaepHGwG9rR2g` |
-| `treasure.json` | `WeztmSyZuM2swz22r4sQZmpRfnVdfxTCsMVTt5eoygJ`  |
+1. Important information about wallets here
+
+# Deployments
