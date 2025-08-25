@@ -108,15 +108,16 @@ anchor_test1() {
 
 # --- Transferring sol --- 
 sol_transfer() {
-  local FROM_WALLET="../../shit/wallet4.json"
-  local TO_WALLET="wallets/treasury.json"
+  local FROM_WALLET="wallets/treasury.json"
+  local TO_WALLET="wallets/w1.json"
+  local AMOUNT="1.5"
   
   solana transfer \
     --keypair "$FROM_WALLET" \
     --url https://api.devnet.solana.com \
     --fee-payer "$FROM_WALLET" \
     $(solana-keygen pubkey "$TO_WALLET") \
-    "$1" \
+    "$AMOUNT" \
     --no-wait \
     --allow-unfunded-recipient
 }
@@ -133,4 +134,7 @@ seq1() {
 
 
 # ---Execution zone--- 
-seq1
+# seq1
+bal_check
+# sol_transfer
+# bal_check
