@@ -5,7 +5,7 @@ import { PublicKey, SystemProgram } from "@solana/web3.js"
 import { useState } from "react"
 
 // --- Configuration ---
-const PROGRAM_ID_STR = "5TkHvBjnxNJTsuYwqetVmWq9wwcJQqyeaL89TXbrRP5s" // Match Rust program ID
+const PROGRAM_ID_STR = "8fCRvezhexJsx5Guy77p65rPdPV1bztSjE2a9GTTdFjA" // Match Rust program ID
 let programID = null
 try {
   programID = new PublicKey(PROGRAM_ID_STR)
@@ -61,8 +61,8 @@ export const FortuneCookie = () => {
         )
       }
 
-      // Create Program Instance with correct program ID
-      const program = new Program(idl, provider) // Pass programID as second argument
+      // ✅ FIXED: Remove programID parameter - use correct constructor
+      const program = new Program(idl, provider)
       console.log("Program instance created.")
 
       // Derive PDA with current counter
@@ -95,7 +95,7 @@ export const FortuneCookie = () => {
       const tx = await program.methods
         .getFortune(new BN(counter))
         .accounts({
-          fortuneData: fortunePda, // FIXED: Correct account name
+          fortuneData: fortunePda,
           user: wallet.publicKey,
           systemProgram: SystemProgram.programId,
         })
@@ -115,7 +115,7 @@ export const FortuneCookie = () => {
     } catch (err) {
       console.error("Error occurred in getFortune:", err)
 
-      // Handle specific errors
+      // Handle specific errors using Anchor's error handling :cite[1]:cite[6]
       if (err.logs && err.logs.includes("already in use")) {
         // Account already exists, increment counter and try again
         setCounter((c) => c + 1)
