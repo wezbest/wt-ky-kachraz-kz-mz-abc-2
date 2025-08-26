@@ -19,7 +19,7 @@ const App = () => {
         <FortuneCookie />
       </main>
       <footer className="mt-8 text-synthwave-grid text-sm">
-        Powered by Solana & Anchor
+        Powered by x.com/morektz
       </footer>
     </div>
   )
