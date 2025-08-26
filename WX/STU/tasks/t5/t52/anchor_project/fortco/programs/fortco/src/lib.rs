@@ -7,7 +7,7 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::entrypoint::ProgramResult;
 
 // Program ID - Replace with your actual program ID after deployment
-declare_id!("8eWY4rYwec6MTzjVHq3EmB51nn4UTdRtJeNNtJQXUacy");
+declare_id!("5TkHvBjnxNJTsuYwqetVmWq9wwcJQqyeaL89TXbrRP5s");
 
 /// Main program module containing all instruction handlers
 #[program]

@@ -1,23 +1,21 @@
 // tests/fortco.ts
-import * as anchor from "@coral-xyz/anchor";
-import { Program, BN } from "@coral-xyz/anchor"; // Import BN for u64 args
+import * as anchor from "@coral-xyz/anchor"
+// Explicitly import BN type and constructor
+import { BN, Program } from "@coral-xyz/anchor"
 import {
   Keypair,
   LAMPORTS_PER_SOL,
   PublicKey,
   Transaction,
-} from "@solana/web3.js";
-import { expect } from "chai";
-// Ensure the path to your generated IDL types is correct
-import { Fortco } from "../target/types/fortco";
+} from "@solana/web3.js"
+import { expect } from "chai"
+import { Fortco } from "../target/types/fortco"
 
 describe("fortco", () => {
-  const provider = anchor.AnchorProvider.env();
-  anchor.setProvider(provider);
-  // Access the program instance using the correct workspace name matching your lib.rs module
-  const program = anchor.workspace.Fortco as Program<Fortco>;
+  const provider = anchor.AnchorProvider.env()
+  anchor.setProvider(provider)
+  const program = anchor.workspace.Fortco as Program<Fortco>
 
-  // List of fortunes from the program for reference/validation
   const fortunes = [
     "You will find a bug in your code today!",
     "A mysterious PR will fix your issues tomorrow.",
@@ -46,206 +44,221 @@ describe("fortco", () => {
     "Your code review will be conducted by Skynet.",
     "You will be awarded a Nobel Prize in Debugging for finding that typo.",
     "Your YAML indentation will finally be correct, just this once.",
-    "You will discover that 'It works on my machine' is a valid deployment strategy in at least 3 parallel universes."
-  ];
+    "You will discover that 'It works on my machine' is a valid deployment strategy in at least 3 parallel universes.",
+  ]
 
   // --- Helper Functions ---
 
-  // Helper to get rent exemption for the PDA (space = 1000)
   async function getPDARentExemption(): Promise<number> {
-    return await provider.connection.getMinimumBalanceForRentExemption(1000);
+    return await provider.connection.getMinimumBalanceForRentExemption(1000)
   }
 
-  // Helper to correctly convert a JavaScript number to a u64 little-endian byte Buffer
-  // This matches Rust's u64.to_le_bytes() serialization.
   function numberToU64LEBytes(num: number): Buffer {
-    const buffer = Buffer.alloc(8); // u64 is 8 bytes
-    buffer.writeBigUInt64LE(BigInt(num), 0);
-    return buffer;
+    const buffer = Buffer.alloc(8)
+    buffer.writeBigUInt64LE(BigInt(num), 0)
+    return buffer
   }
 
   // --- Tests ---
 
   it("Happy Path: User gets a fortune with sufficient lamports", async () => {
-    const user = Keypair.generate();
-    const counter = 0; // Unique counter for this test/user
-    const bnCounter = new BN(counter); // Wrap counter in BN for u64
+    const user = Keypair.generate()
+    const counter = 0
+    // Explicitly type the BN variable
+    const bnCounter: BN = new BN(counter)
 
-    // --- Setup: Transfer required lamports ---
-    const userRentExempt = await provider.connection.getMinimumBalanceForRentExemption(0);
-    const pdaRentExempt = await getPDARentExemption();
-    const programFeeLamports = 2;
-    const totalRequiredLamports = userRentExempt + pdaRentExempt + programFeeLamports;
+    const userRentExempt =
+      await provider.connection.getMinimumBalanceForRentExemption(0)
+    const pdaRentExempt = await getPDARentExemption()
+    const programFeeLamports = 2
+    const totalRequiredLamports =
+      userRentExempt + pdaRentExempt + programFeeLamports
 
-    console.log(`Transferring ${totalRequiredLamports} lamports to user (${totalRequiredLamports / LAMPORTS_PER_SOL} SOL)`);
+    console.log(
+      `Transferring ${totalRequiredLamports} lamports to user (${
+        totalRequiredLamports / LAMPORTS_PER_SOL
+      } SOL)`
+    )
 
     const transferIx = anchor.web3.SystemProgram.transfer({
       fromPubkey: provider.wallet.publicKey,
       toPubkey: user.publicKey,
       lamports: totalRequiredLamports,
-    });
-    const transferTx = new Transaction().add(transferIx);
-    await provider.sendAndConfirm(transferTx, []);
+    })
+    const transferTx = new Transaction().add(transferIx)
+    await provider.sendAndConfirm(transferTx, [])
 
-    // --- Derive the correct PDA address ---
     const [fortunePda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("fortune"), user.publicKey.toBuffer(), numberToU64LEBytes(counter)], // Use helper
+      [
+        Buffer.from("fortune"),
+        user.publicKey.toBuffer(),
+        numberToU64LEBytes(counter),
+      ],
       program.programId
-    );
+    )
 
-    // --- Call the program instruction ---
+    // --- FIXED: Added comma after fortunePda ---
     const tx = await program.methods
-      .getFortune(bnCounter) // Pass BN(counter) as u64 argument
+      .getFortune(bnCounter)
       .accounts({
-        // Use the exact field name from the #[derive(Accounts)] struct in Rust
-        fortune_ fortunePda,
+        fortune: fortunePda, // Added comma here
         user: user.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
       .signers([user])
-      .rpc();
+      .rpc()
 
-    await provider.connection.confirmTransaction(tx);
+    await provider.connection.confirmTransaction(tx)
 
-    // --- Verify the result ---
-    const fortuneAccount = await program.account.fortuneData.fetch(fortunePda);
-    expect(fortuneAccount.fortune).to.be.a('string').and.not.empty;
-    expect(fortunes).to.include(fortuneAccount.fortune); // Check it's a valid fortune
-    console.log("Fortune received:", fortuneAccount.fortune);
-    expect(fortuneAccount.user.toBase58()).to.equal(user.publicKey.toBase58());
-  });
+    const fortuneAccount = await program.account.fortuneData.fetch(fortunePda)
+    expect(fortuneAccount.fortune).to.be.a("string").and.not.empty
+    expect(fortunes).to.include(fortuneAccount.fortune)
+    console.log("Fortune received:", fortuneAccount.fortune)
+    expect(fortuneAccount.user.toBase58()).to.equal(user.publicKey.toBase58())
+  })
 
   it("Happy Path: User gets a fortune with more than required lamports", async () => {
-    const user = Keypair.generate();
-    const counter = 1; // Different counter for uniqueness
-    const bnCounter = new BN(counter); // Wrap counter in BN for u64
+    const user = Keypair.generate()
+    const counter = 1
+    // Explicitly type the BN variable
+    const bnCounter: BN = new BN(counter)
 
-    // --- Setup: Transfer a comfortable amount ---
-    const transferAmountLamports = 1 * LAMPORTS_PER_SOL;
-    console.log(`Transferring ${transferAmountLamports} lamports (1 SOL) to user for test`);
+    const transferAmountLamports = 1 * LAMPORTS_PER_SOL
+    console.log(
+      `Transferring ${transferAmountLamports} lamports (1 SOL) to user for test`
+    )
 
     const transferIx = anchor.web3.SystemProgram.transfer({
       fromPubkey: provider.wallet.publicKey,
       toPubkey: user.publicKey,
       lamports: transferAmountLamports,
-    });
-    const transferTx = new Transaction().add(transferIx);
-    await provider.sendAndConfirm(transferTx, []);
+    })
+    const transferTx = new Transaction().add(transferIx)
+    await provider.sendAndConfirm(transferTx, [])
 
-    // --- Derive the correct PDA address ---
     const [fortunePda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("fortune"), user.publicKey.toBuffer(), numberToU64LEBytes(counter)], // Use helper
+      [
+        Buffer.from("fortune"),
+        user.publicKey.toBuffer(),
+        numberToU64LEBytes(counter),
+      ],
       program.programId
-    );
+    )
 
-    // --- Call the program instruction ---
+    // --- FIXED: Added comma after fortunePda ---
     const tx = await program.methods
-      .getFortune(bnCounter) // Pass BN(counter) as u64 argument
+      .getFortune(bnCounter)
       .accounts({
-        fortune_ fortunePda, // Correct account name
+        fortune: fortunePda, // Added comma here
         user: user.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
       .signers([user])
-      .rpc();
+      .rpc()
 
-    await provider.connection.confirmTransaction(tx);
+    await provider.connection.confirmTransaction(tx)
 
-    // --- Verify the result ---
-    const fortuneAccount = await program.account.fortuneData.fetch(fortunePda);
-    expect(fortuneAccount.fortune).to.be.a('string').and.not.empty;
-    expect(fortunes).to.include(fortuneAccount.fortune); // Check it's a valid fortune
-    console.log("Fortune received:", fortuneAccount.fortune);
-    expect(fortuneAccount.user.toBase58()).to.equal(user.publicKey.toBase58());
-  });
+    const fortuneAccount = await program.account.fortuneData.fetch(fortunePda)
+    expect(fortuneAccount.fortune).to.be.a("string").and.not.empty
+    expect(fortunes).to.include(fortuneAccount.fortune)
+    console.log("Fortune received:", fortuneAccount.fortune)
+    expect(fortuneAccount.user.toBase58()).to.equal(user.publicKey.toBase58())
+  })
 
   it("Unhappy Path: User fails to get fortune with insufficient payment for PDA", async () => {
-    const user = Keypair.generate();
-    const counter = 2; // Different counter
-    const bnCounter = new BN(counter); // Wrap counter in BN for u64
+    const user = Keypair.generate()
+    const counter = 2
+    // Explicitly type the BN variable
+    const bnCounter: BN = new BN(counter)
 
-    // --- Setup: Transfer only user rent + minimal amount ---
-    const userRentExempt = await provider.connection.getMinimumBalanceForRentExemption(0);
-    const transferAmountLamports = userRentExempt + 1000; // Insufficient for PDA rent
+    const userRentExempt =
+      await provider.connection.getMinimumBalanceForRentExemption(0)
+    const transferAmountLamports = userRentExempt + 1000
 
-    console.log(`Transferring ${transferAmountLamports} lamports to user (insufficient for PDA creation)`);
+    console.log(
+      `Transferring ${transferAmountLamports} lamports to user (insufficient for PDA creation)`
+    )
 
     const transferIx = anchor.web3.SystemProgram.transfer({
       fromPubkey: provider.wallet.publicKey,
       toPubkey: user.publicKey,
       lamports: transferAmountLamports,
-    });
-    const transferTx = new Transaction().add(transferIx);
-    await provider.sendAndConfirm(transferTx, []);
+    })
+    const transferTx = new Transaction().add(transferIx)
+    await provider.sendAndConfirm(transferTx, [])
 
-    // --- Derive the PDA address (needed for the instruction call) ---
     const [fortunePda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("fortune"), user.publicKey.toBuffer(), numberToU64LEBytes(counter)], // Use helper
+      [
+        Buffer.from("fortune"),
+        user.publicKey.toBuffer(),
+        numberToU64LEBytes(counter),
+      ],
       program.programId
-    );
+    )
 
-    // --- Attempt the call, expecting failure ---
     try {
+      // --- FIXED: Added comma after fortunePda ---
       await program.methods
-        .getFortune(bnCounter) // Pass BN(counter) as u64 argument
+        .getFortune(bnCounter)
         .accounts({
-          fortune_ fortunePda, // Correct account name
+          fortune: fortunePda, // Added comma here
           user: user.publicKey,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
         .signers([user])
-        .rpc();
+        .rpc()
 
-      expect.fail("Transaction should have failed with insufficient payment for PDA creation");
+      expect.fail(
+        "Transaction should have failed with insufficient payment for PDA creation"
+      )
     } catch (error) {
-      // This test expects the transaction simulation to fail, likely due to rent exemption.
-      // The actual error might be from the System Program during PDA allocation.
-      console.log("Caught expected error during PDA creation (likely insufficient rent exemption):", error?.message);
-      expect(error).to.exist; // Assert that *some* error occurred
+      console.log(
+        "Caught expected error during PDA creation (likely insufficient rent exemption):",
+        error?.message
+      )
+      expect(error).to.exist
     }
-  });
+  })
 
   it("Unhappy Path: Transaction fails when user doesn't sign", async () => {
-    const user = Keypair.generate();
-    const counter = 3; // Different counter
-    const bnCounter = new BN(counter); // Wrap counter in BN for u64
+    const user = Keypair.generate()
+    const counter = 3
+    // Explicitly type the BN variable
+    const bnCounter: BN = new BN(counter)
 
-    // --- Setup: Transfer a comfortable amount ---
-    const transferAmountLamports = 1 * LAMPORTS_PER_SOL;
+    const transferAmountLamports = 1 * LAMPORTS_PER_SOL
     const transferIx = anchor.web3.SystemProgram.transfer({
       fromPubkey: provider.wallet.publicKey,
       toPubkey: user.publicKey,
       lamports: transferAmountLamports,
-    });
-    const transferTx = new Transaction().add(transferIx);
-    await provider.sendAndConfirm(transferTx, []);
+    })
+    const transferTx = new Transaction().add(transferIx)
+    await provider.sendAndConfirm(transferTx, [])
 
-    // --- Derive the PDA address ---
     const [fortunePda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("fortune"), user.publicKey.toBuffer(), numberToU64LEBytes(counter)], // Use helper
+      [
+        Buffer.from("fortune"),
+        user.publicKey.toBuffer(),
+        numberToU64LEBytes(counter),
+      ],
       program.programId
-    );
+    )
 
-    // --- Attempt the call without signing, expecting failure ---
     try {
-      // Intentionally omitting .signers([user])
+      // --- FIXED: Added comma after fortunePda ---
       await program.methods
-        .getFortune(bnCounter) // Pass BN(counter) as u64 argument
+        .getFortune(bnCounter)
         .accounts({
-          fortune_ fortunePda, // Correct account name
+          fortune: fortunePda, // Added comma here
           user: user.publicKey,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
-        .rpc(); // No signers provided
+        .rpc()
 
-      expect.fail("Transaction should have failed without user signature");
+      expect.fail("Transaction should have failed without user signature")
     } catch (error) {
-      console.log("Correctly rejected transaction without proper signature");
-      // Assert that an error occurred (signature verification failure)
-      expect(error).to.exist;
-      // Note: The exact error message format can vary.
-      // You could add a more specific check like:
-      // expect(error.message).to.include("Signature verification failed");
+      console.log("Correctly rejected transaction without proper signature")
+      expect(error).to.exist
     }
-  });
-});
+  })
+})
