@@ -6,9 +6,7 @@
     "spec": "0.1.0",
     "description": "Created with Anchor"
   },
-  "docs": [
-    "Main program module containing all instruction handlers"
-  ],
+  "docs": ["Main program module containing all instruction handlers"],
   "instructions": [
     {
       "name": "get_fortune",
@@ -17,7 +15,6 @@
         "",
         "# Arguments",
         "* `ctx` - Context containing all required accounts",
-        "* `counter` - A unique number per user request to generate distinct PDAs",
         "",
         "# Returns",
         "* `ProgramResult` - Success or error",
@@ -26,16 +23,7 @@
         "* User has paid 2 lamports (wallet balance check)",
         "* Fortune account is properly initialized"
       ],
-      "discriminator": [
-        39,
-        34,
-        202,
-        168,
-        67,
-        26,
-        146,
-        109
-      ],
+      "discriminator": [39, 34, 202, 168, 67, 26, 146, 109],
       "accounts": [
         {
           "name": "fortune_data",
@@ -54,15 +42,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  102,
-                  111,
-                  114,
-                  116,
-                  117,
-                  110,
-                  101
-                ]
+                "value": [102, 111, 114, 116, 117, 110, 101]
               },
               {
                 "kind": "account",
@@ -70,7 +50,8 @@
               },
               {
                 "kind": "arg",
-                "path": "counter"
+                "path": "counter",
+                "account": "fortune_data"
               }
             ]
           }
@@ -88,9 +69,7 @@
         },
         {
           "name": "system_program",
-          "docs": [
-            "System program required for account creation"
-          ],
+          "docs": ["System program required for account creation"],
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -105,33 +84,7 @@
   "accounts": [
     {
       "name": "FortuneData",
-      "discriminator": [
-        223,
-        123,
-        159,
-        2,
-        133,
-        244,
-        47,
-        85
-      ]
-    }
-  ],
-  "errors": [
-    {
-      "code": 6000,
-      "name": "InsufficientPayment",
-      "msg": "Insufficient payment. 2 lamports required."
-    }
-  ],
-  "types": [
-    {
-      "name": "FortuneData",
-      "docs": [
-        "Data structure for storing fortune information",
-        "",
-        "This account will be created for each user and store their fortune."
-      ],
+      "discriminator": [223, 123, 159, 2, 133, 244, 47, 85],
       "type": {
         "kind": "struct",
         "fields": [
@@ -153,6 +106,13 @@
           }
         ]
       }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InsufficientPayment",
+      "msg": "Insufficient payment. 2 lamports required."
     }
   ]
 }
