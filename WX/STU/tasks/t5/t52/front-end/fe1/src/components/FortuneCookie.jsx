@@ -62,7 +62,7 @@ export const FortuneCookie = () => {
       }
 
       // Create Program Instance with correct program ID
-      const program = new Program(idl, programID, provider) // Pass programID as second argument
+      const program = new Program(idl, provider) // Pass programID as second argument
       console.log("Program instance created.")
 
       // Derive PDA with current counter
