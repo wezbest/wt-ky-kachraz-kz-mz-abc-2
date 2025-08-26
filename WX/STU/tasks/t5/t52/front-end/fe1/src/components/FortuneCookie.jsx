@@ -1,76 +1,76 @@
 // src/components/FortuneCookie.jsx
-import { AnchorProvider, Program, BN } from "@coral-xyz/anchor"; // Import BN for u64
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey, SystemProgram } from "@solana/web3.js";
-import { useState } from "react";
+import { AnchorProvider, BN, Program } from "@coral-xyz/anchor" // Import BN for u64
+import { useConnection, useWallet } from "@solana/wallet-adapter-react"
+import { PublicKey, SystemProgram } from "@solana/web3.js"
+import { useState } from "react"
 
 // --- Configuration ---
 // Program ID from your successful deployment
-const PROGRAM_ID_STR = "28fEBCBgk29YmK8dZWmbFyMawxFDVE8Hc6wyGHf8jHz4";
-let programID = null;
+const PROGRAM_ID_STR = "28fEBCBgk29YmK8dZWmbFyMawxFDVE8Hc6wyGHf8jHz4"
+let programID = null
 try {
-  programID = new PublicKey(PROGRAM_ID_STR);
+  programID = new PublicKey(PROGRAM_ID_STR)
 } catch (e) {
-  console.error("Invalid Program ID provided:", PROGRAM_ID_STR);
+  console.error("Invalid Program ID provided:", PROGRAM_ID_STR)
 }
 
-const FORTUNE_FEE_LAMPORTS = 2; // Matches the fee in your Solana program
+const FORTUNE_FEE_LAMPORTS = 2 // Matches the fee in your Solana program
 // --- End Configuration ---
 
 export const FortuneCookie = () => {
-  const { connection } = useConnection();
-  const wallet = useWallet();
-  const [fortune, setFortune] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { connection } = useConnection()
+  const wallet = useWallet()
+  const [fortune, setFortune] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
   // State to manage the counter for multiple fortunes
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(0)
 
   // Helper to correctly convert a JavaScript number to a u64 little-endian byte Buffer
   const numberToU64LEBytes = (num) => {
-    const buffer = Buffer.alloc(8); // u64 is 8 bytes
-    buffer.writeBigUInt64LE(BigInt(num), 0);
-    return buffer;
-  };
+    const buffer = Buffer.alloc(8) // u64 is 8 bytes
+    buffer.writeBigUInt64LE(BigInt(num), 0)
+    return buffer
+  }
 
   const getFortune = async () => {
     // 1. Validation Logic
     if (!programID) {
-      setError("Program ID is not configured correctly.");
-      return;
+      setError("Program ID is not configured correctly.")
+      return
     }
     if (!wallet.connected || !wallet.publicKey) {
-      setError("Please connect your wallet first.");
-      return;
+      setError("Please connect your wallet first.")
+      return
     }
 
-    setIsLoading(true);
-    setError(null);
-    setFortune(null);
+    setIsLoading(true)
+    setError(null)
+    setFortune(null)
 
     try {
       // 2. Provider Setup
-      const provider = new AnchorProvider(connection, wallet, {});
+      const provider = new AnchorProvider(connection, wallet, {})
 
       // 3. Fetch IDL from the public directory
-      let idl = null;
+      let idl = null
       try {
-        const response = await fetch("/fortco.json");
+        const response = await fetch("/fortco.json")
         if (!response.ok) {
-          throw new Error(`Network response was not ok: ${response.statusText}`);
+          throw new Error(`Network response was not ok: ${response.statusText}`)
         }
-        idl = await response.json();
-        console.log("IDL loaded successfully.");
+        idl = await response.json()
+        console.log("IDL loaded successfully.")
       } catch (fetchErr) {
-        console.error("Error fetching IDL:", fetchErr);
+        console.error("Error fetching IDL:", fetchErr)
         throw new Error(
           `Failed to load program interface (IDL): ${fetchErr.message}`
-        );
+        )
       }
 
       // 4. Create Program Instance (Pass programID correctly)
-      const program = new Program(idl, programID, provider); // Pass programID here
-      console.log("Program instance created.");
+      const program = new Program(idl, provider) // Pass programID here
+      console.log("Program instance created.")
 
       // 5. Derive the Program Derived Address (PDA) - Include Counter
       // This must match the seeds in your Solana program: ["fortune", user_key, counter_u64_le_bytes]
@@ -81,37 +81,37 @@ export const FortuneCookie = () => {
           numberToU64LEBytes(counter), // Include the counter in seeds
         ],
         program.programId
-      );
-      console.log("Derived Fortune PDA:", fortunePda.toBase58());
+      )
+      console.log("Derived Fortune PDA:", fortunePda.toBase58())
 
       // 6. Call the program's getFortune method - Pass Counter and Fix Account Name
-      console.log("Sending 'getFortune' transaction for counter:", counter);
+      console.log("Sending 'getFortune' transaction for counter:", counter)
       const tx = await program.methods
         .getFortune(new BN(counter)) // Pass the counter as a BN (u64) argument
         .accounts({
           // FIX 1: Use the correct account name 'fortune_data' as defined in the Rust struct
-          fortune_ fortunePda, // Changed from 'fortuneData'
+          // FIX 2: Use correct JavaScript object syntax (key: value)
+          fortune_: fortunePda, // Changed from 'fortuneData'. Note the colon ':'
           user: wallet.publicKey,
           systemProgram: SystemProgram.programId,
         })
-        .rpc();
+        .rpc()
 
-      console.log("Transaction sent. Signature:", tx);
+      console.log("Transaction sent. Signature:", tx)
 
       // 7. Fetch the Result
-      console.log("Fetching fortune data from PDA...");
+      console.log("Fetching fortune data from PDA...")
       const fetchedFortuneAccount = await program.account.fortuneData.fetch(
         fortunePda
-      );
-      console.log("Fetched Fortune Account Data:", fetchedFortuneAccount);
+      )
+      console.log("Fetched Fortune Account Data:", fetchedFortuneAccount)
 
       // 8. Update UI State
-      setFortune(fetchedFortuneAccount.fortune);
+      setFortune(fetchedFortuneAccount.fortune)
       // Increment the counter for the next click
-      setCounter((c) => c + 1);
-
+      setCounter((c) => c + 1)
     } catch (err) {
-      console.error("Error occurred in getFortune:", err);
+      console.error("Error occurred in getFortune:", err)
       // 9. Error Handling
       if (
         err &&
@@ -119,18 +119,18 @@ export const FortuneCookie = () => {
         err.error.errorCode &&
         err.error.errorCode.code === "InsufficientPayment"
       ) {
-        setError("Insufficient funds. You need at least 2 lamports.");
+        setError("Insufficient funds. You need at least 2 lamports.")
       } else {
         const errorMessage =
           (err && (err.message || err.toString())) ||
-          "An unknown error occurred.";
-        setError(`Failed to get fortune: ${errorMessage}`);
+          "An unknown error occurred."
+        setError(`Failed to get fortune: ${errorMessage}`)
       }
     } finally {
       // 10. Reset Loading State
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   // 11. JSX Rendering Logic
   return (
@@ -184,5 +184,5 @@ export const FortuneCookie = () => {
         </p>
       )}
     </div>
-  );
-};
+  )
+}
