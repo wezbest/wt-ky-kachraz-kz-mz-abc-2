@@ -14,7 +14,8 @@ const App = () => {
           Synthwave Fortune Cookie
         </h1>
         <p className="text-synthwave-blue mb-8">
-          Pay 2 lamports, get a hilarious fortune!
+          Morektz Ackee School of Solana Project - Pay 2 lamports, get a
+          hilarious fortune!
         </p>
         <FortuneCookie />
       </main>
